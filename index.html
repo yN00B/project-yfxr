@@ -14,6 +14,7 @@
       background-size: cover;
       font-family: Arial, sans-serif;
     }
+
     h1 {
       font-size: 10vw;
       font-weight: bold;
@@ -27,9 +28,49 @@
       66%  { color: cyan;  text-shadow: 0 0 20px cyan; }
       100% { color: red;   text-shadow: 0 0 20px red; }
     }
+
+    .top-buttons {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .top-buttons a {
+      padding: 10px 18px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(6px);
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+      transition: 
+        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        background 0.35s ease,
+        box-shadow 0.35s ease;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+    }
+
+    .top-buttons a:hover {
+      transform: scale(1.16);
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow:
+        0 0 10px #ff3b3b,
+        0 0 20px #00ff73,
+        0 0 30px #00e1ff;
+    }
   </style>
 </head>
 <body>
+
+  <div class="top-buttons">
+    <a href="https://yfxr.qzz.io/downloads">Downloads</a>
+    <a href="https://yfxr.qzz.io/shop">Shop</a>
+  </div>
+
   <h1>YFXR</h1>
+
 </body>
 </html>
