@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>YFXR Shop</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('https://64.media.tumblr.com/90f6cdcbc51c53fa4ca7294da96fc3f8/tumblr_pios19KpQC1ufq8wko1_1280.gifv') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      overflow: hidden;
+    }
+
+    @keyframes rgbText {
+      0% { color: red; }
+      33% { color: lime; }
+      66% { color: cyan; }
+      100% { color: red; }
+    }
+
+    .shop-container {
+      padding: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 1s ease;
+    }
+
+    .item {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 12px rgba(255,255,255,0.25);
+      transition: transform 0.3s ease;
+      animation: rgbText 3s infinite linear;
+    }
+
+    .item:hover {
+      transform: scale(1.05);
+    }
+
+    .item img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .buy-btn {
+      margin-top: 10px;
+      display: inline-block;
+      padding: 10px 18px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      backdrop-filter: blur(6px);
+      transition: 0.3s ease;
+      animation: rgbText 3s infinite linear;
+    }
+
+    .buy-btn:hover {
+      background: rgba(255,255,255,0.32);
+      transform: scale(1.12);
+    }
+
+    .modal-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal {
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(12px);
+      padding: 30px;
+      border-radius: 16px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(255,255,255,0.3);
+      animation: pop 0.3s ease;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .close-btn {
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      background: rgba(255,255,255,0.25);
+      padding: 6px 12px;
+      border-radius: 8px;
+      backdrop-filter: blur(4px);
+      transition: 0.3s;
+      animation: rgbText 3s infinite linear;
+    }
+
+    .close-btn:hover {
+      background: rgba(255,255,255,0.35);
+      transform: scale(1.15);
+    }
+
+    #loadingScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 2rem;
+      animation: rgbText 3s infinite linear;
+      z-index: 9999;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loader {
+      width: 70px;
+      height: 70px;
+      border: 6px solid rgba(255,255,255,0.3);
+      border-top: 6px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  </style>
+</head>
+<body>
+
+<div id="loadingScreen">
+  <div class="loader"></div>
+</div>
+
+<div class="shop-container" id="shop">
+  <div class="item"><img src="https://www.shutterstock.com/shutterstock/photos/686968867/display_1500/stock-photo-funny-clown-with-a-gun-pistol-isolated-on-white-background-686968867.jpg"/><h3>example hhh</h3><a class="buy-btn" onclick="openModal()">Buy</a></div>
+  <div class="item"><img src="https://www.shutterstock.com/shutterstock/photos/686968867/display_1500/stock-photo-funny-clown-with-a-gun-pistol-isolated-on-white-background-686968867.jpg"/><h3>hhdhsd</h3><a class="buy-btn" onclick="openModal()">Buy</a></div>
+  <div class="item"><img src="https://www.shutterstock.com/shutterstock/photos/686968867/display_1500/stock-photo-funny-clown-with-a-gun-pistol-isolated-on-white-background-686968867.jpg"/><h3>yfxr</h3><a class="buy-btn" onclick="openModal()">Buy</a></div>
+  <div class="item"><img src="https://www.shutterstock.com/shutterstock/photos/686968867/display_1500/stock-photo-funny-clown-with-a-gun-pistol-isolated-on-white-background-686968867.jpg"/><h3>yass4</h3><a class="buy-btn" onclick="openModal()">Buy</a></div>
+  <div class="item"><img src="https://www.shutterstock.com/shutterstock/photos/686968867/display_1500/stock-photo-funny-clown-with-a-gun-pistol-isolated-on-white-background-686968867.jpg"/><h3>mmmm</h3><a class="buy-btn" onclick="openModal()">Buy</a></div>
+  <div class="item"><img src="https://www.shutterstock.com/shutterstock/photos/686968867/display_1500/stock-photo-funny-clown-with-a-gun-pistol-isolated-on-white-background-686968867.jpg"/><h3>mammii</h3><a class="buy-btn" onclick="openModal()">Buy</a></div>
+  <div class="item"><img src="https://www.shutterstock.com/shutterstock/photos/686968867/display_1500/stock-photo-funny-clown-with-a-gun-pistol-isolated-on-white-background-686968867.jpg"/><h3>peg meeee</h3><a class="buy-btn" onclick="openModal()">Buy</a></div>
+  <div class="item"><img src="https://www.shutterstock.com/shutterstock/photos/686968867/display_1500/stock-photo-funny-clown-with-a-gun-pistol-isolated-on-white-background-686968867.jpg"/><h3>woooshh</h3><a class="buy-btn" onclick="openModal()">Buy</a></div>
+  <div class="item"><img src="https://www.shutterstock.com/shutterstock/photos/686968867/display_1500/stock-photo-funny-clown-with-a-gun-pistol-isolated-on-white-background-686968867.jpg"/><h3>meow</h3><a class="buy-btn" onclick="openModal()">Buy</a></div>
+  <div class="item"><img src="https://www.shutterstock.com/shutterstock/photos/686968867/display_1500/stock-photo-funny-clown-with-a-gun-pistol-isolated-on-white-background-686968867.jpg"/><h3>mode mooo</h3><a class="buy-btn" onclick="openModal()">Buy</a></div>
+</div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="close-btn" onclick="closeModal()">X</div>
+    <h2 style="animation: rgbText 3s infinite linear;">Contact to Buy</h2>
+    <p style="animation: rgbText 3s infinite linear;">Message <strong>YFXR</strong> on Discord to purchase.</p>
+  </div>
+</div>
+
+<script>
+  window.onload = function() {
+    setTimeout(() => {
+      document.getElementById('loadingScreen').style.display = 'none';
+      const shop = document.getElementById('shop');
+      shop.style.opacity = '1';
+      shop.style.transform = 'translateY(0)';
+      document.body.style.overflow = 'auto';
+    }, 2000);
+  };
+
+  function openModal() {
+    document.getElementById('modalBg').style.display = 'flex';
+  }
+  function closeModal() {
+    document.getElementById('modalBg').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
