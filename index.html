@@ -1,76 +1,394 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>YFXR</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: url('https://64.media.tumblr.com/90f6cdcbc51c53fa4ca7294da96fc3f8/tumblr_pios19KpQC1ufq8wko1_1280.gifv') no-repeat center center fixed;
-      background-size: cover;
-      font-family: Arial, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YFXR Hub</title>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-bg: rgba(40, 44, 52, 0.3);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-color: #00d2ff;
+            --accent-hover: #38bdf8;
+            --game-accent: #a855f7;
+        }
 
-    h1 {
-      font-size: 10vw;
-      font-weight: bold;
-      margin: 0;
-      animation: rgbGlow 5s infinite linear;
-    }
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--accent-color), var(--game-accent));
+            border-radius: 5px;
+            border: 2px solid #000;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-hover);
+        }
 
-    @keyframes rgbGlow {
-      0%   { color: red;   text-shadow: 0 0 20px red; }
-      33%  { color: lime;  text-shadow: 0 0 20px lime; }
-      66%  { color: cyan;  text-shadow: 0 0 20px cyan; }
-      100% { color: red;   text-shadow: 0 0 20px red; }
-    }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-    .top-buttons {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      gap: 12px;
-      z-index: 9999;
-    }
+        body::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 210, 255, 0.15) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
 
-    .top-buttons a {
-      padding: 10px 18px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(6px);
-      color: white;
-      text-decoration: none;
-      font-size: 15px;
-      transition: 
-        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-        background 0.35s ease,
-        box-shadow 0.35s ease;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
-    }
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: 10%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
 
-    .top-buttons a:hover {
-      transform: scale(1.16);
-      background: rgba(255, 255, 255, 0.25);
-      box-shadow:
-        0 0 10px #ff3b3b,
-        0 0 20px #00ff73,
-        0 0 30px #00e1ff;
-    }
-  </style>
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: rgba(40, 44, 52, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(to left, #00d2ff, #a855f7, #ff007f, #00d2ff);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rgbFlow 6s linear infinite;
+        }
+
+        @keyframes rgbFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 16px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-color);
+            background-color: rgba(0, 210, 255, 0.05);
+            border-color: rgba(0, 210, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .nav-links a.games-tab {
+            color: var(--game-accent);
+            border-color: rgba(168, 85, 247, 0.1);
+            position: relative;
+        }
+
+        .nav-links a.games-tab:hover {
+            color: #c084fc;
+            background-color: rgba(168, 85, 247, 0.05);
+            border-color: rgba(168, 85, 247, 0.4);
+        }
+        
+        .nav-links a.games-tab::after {
+            content: '⚡';
+            font-size: 0.7rem;
+            position: absolute;
+            top: -4px;
+            right: -4px;
+        }
+
+        .hero {
+            padding: 220px 0 140px 0;
+            text-align: center;
+            will-change: transform, opacity;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 40px rgba(0, 210, 255, 0.2);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: rgba(40, 44, 52, 0.3);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: var(--game-accent);
+            color: var(--game-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(168, 85, 247, 0.15);
+        }
+
+        #projects-section {
+            padding: 60px 0 120px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transform: translateY(150px);
+            opacity: 0;
+            will-change: transform, opacity;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s linear;
+        }
+
+        .card:hover {
+            background-color: rgba(40, 44, 52, 0.5);
+            border-color: rgba(0, 210, 255, 0.4);
+            box-shadow: 0 15px 30px rgba(0, 210, 255, 0.1);
+        }
+
+        .card.featured-card:hover {
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 15px 30px rgba(168, 85, 247, 0.1);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { flex-direction: column; gap: 10px; width: 100%; align-items: center; }
+            .nav-links a { display: block; width: 80%; text-align: center; }
+            .nav-wrapper { flex-direction: column; height: auto; padding: 15px 0; gap: 15px; }
+            .btn-group { flex-direction: column; align-items: center; }
+            .btn { width: 80%; text-align: center; }
+        }
+    </style>
 </head>
 <body>
 
-  <div class="top-buttons">
-    <a href="https://yfxr.qzz.io/downloads">Downloads</a>
-    <a href="https://yfxr.qzz.io/shop">Shop</a>
-  </div>
+    <header>
+        <div class="container nav-wrapper">
+            <div class="logo">YFXR</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#" class="active audiolink">Home</a></li>
+                    <li><a href="https://yfxr.qzz.io/shop/" class="audiolink">Shop</a></li>
+                    <li><a href="https://yfxr.qzz.io/games/" class="games-tab audiolink">Games</a></li>
+                    <li><a href="https://yfxr.qzz.io/downloads/" class="audiolink">Downloads</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-  <h1>YFXR</h1>
+    <main class="container">
+        
+        <section class="hero" id="hero-track">
+            <h1>YFXR website 1.0</h1>
+            <p>i believe that u either want to see trash websites or have absolutely nothing to do</p>
+            <div class="btn-group">
+                <a href="https://www.youtube.com/watch?v=KK5uGdYGo80" class="btn btn-primary audiolink">{Coming soon}</a>
+                <a href="https://yfxr.qzz.io/games/" class="btn btn-secondary audiolink">Play my games ➔</a>
+            </div>
+        </section>
 
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.08); max-width: 80%; margin: 0 auto;">
+
+        <section id="projects-section">
+            <div class="grid">
+                <div class="card audiolink">
+                    <h3>👨🏿 Useless html skills!!</h3>
+                    <p>yeah bro im just an unemployed man in his mothers basement</p>
+                </div>
+                
+                <div class="card featured-card audiolink">
+                    <h3>🗑️ games</h3>
+                    <p>trashy games that u will get bored of in less than an instant ! maybe worth it </p>
+                </div>
+
+                <div class="card audiolink">
+                    <h3>👏🏿 ehh downloads</h3>
+                    <p>i put some software and useless or useful stuff there when im free i guess ?</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 YFXR. yeah.</p>
+        </div>
+    </footer>
+
+    <script>
+        const heroSection = document.getElementById('hero-track');
+        const cards = document.querySelectorAll('.card');
+
+        window.addEventListener('scroll', () => {
+            let scrollValue = window.scrollY;
+            
+            if (scrollValue > 5) {
+                heroSection.style.transform = `translateX(${scrollValue * 0.4}px)`;
+                heroSection.style.opacity = Math.max(0, 1 - scrollValue / 400);
+            } else {
+                heroSection.style.transform = 'translateX(0px)';
+                heroSection.style.opacity = 1;
+            }
+
+            cards.forEach((card, index) => {
+                let cardTop = card.getBoundingClientRect().top;
+                let triggerPoint = window.innerHeight * 0.85;
+                
+                if (cardTop < triggerPoint) {
+                    let progress = (triggerPoint - cardTop) / 250;
+                    progress = Math.min(Math.max(progress, 0), 1);
+                    
+                    let currentY = 150 - (progress * 150);
+                    let currentOpacity = progress;
+                    
+                    card.style.transform = `translateY(${currentY}px)`;
+                    card.style.opacity = currentOpacity;
+                } else {
+                    card.style.transform = 'translateY(150px)';
+                    card.style.opacity = 0;
+                }
+            });
+        });
+
+        const hoverSound = new Audio("https://cdn.pixabay.com/download/audio/2025/09/05/audio_2b677bbcc4.mp3?filename=lesiakower-minimalist-button-hover-sound-effect-399749.mp3");
+        hoverSound.volume = 0.4;
+
+        const audioElements = document.querySelectorAll('.audiolink');
+
+        audioElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                hoverSound.currentTime = 0;
+                hoverSound.play().catch(error => {});
+            });
+        });
+    </script>
 </body>
 </html>
