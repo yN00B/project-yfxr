@@ -12,6 +12,26 @@
             user-select: none;
             -webkit-user-select: none;
             -webkit-tap-highlight-color: transparent;
+            cursor: none !important;
+        }
+
+        #custom-cursor {
+            width: 32px;
+            height: 32px;
+            position: fixed;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(0, 0);
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            #custom-cursor {
+                display: none;
+            }
+            * {
+                cursor: auto !important;
+            }
         }
 
         body {
@@ -181,7 +201,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
             position: relative;
             z-index: 1;
             transition: transform 0.4s cubic-bezier(0.15, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
@@ -297,7 +316,6 @@
             padding: 16px;
             margin-bottom: 12px;
             border-radius: 16px;
-            cursor: pointer;
             position: relative;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid rgba(255, 255, 255, 0.03);
@@ -341,7 +359,6 @@
 
         .shop-item.disabled {
             opacity: 0.3;
-            cursor: not-allowed;
             background: rgba(5, 5, 8, 0.2);
             border-color: transparent;
             box-shadow: none;
@@ -484,7 +501,6 @@
             font-weight: 700;
             font-size: 0.95rem;
             border-radius: 12px;
-            cursor: pointer;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             margin-top: 16px;
             width: 100%;
@@ -508,7 +524,6 @@
             border-color: rgba(255, 255, 255, 0.05);
             color: rgba(255, 255, 255, 0.2);
             background: rgba(255, 255, 255, 0.02);
-            cursor: not-allowed;
             box-shadow: none;
         }
 
@@ -527,6 +542,30 @@
             color: #ffffff;
             font-weight: 700;
             font-variant-numeric: tabular-nums;
+        }
+
+        .io-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .io-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .io-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
         ::-webkit-scrollbar {
@@ -634,8 +673,6 @@
                 flex-direction: column;
                 align-items: center;
                 gap: 4px;
-                cursor: pointer;
-                transition: all 0.2s;
                 max-width: 90px;
                 border-radius: 12px;
                 padding: 6px 0;
@@ -664,15 +701,17 @@
 </head>
 <body>
 
+    <img id="custom-cursor" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/Cursor_icon_with_shadow.png" alt="Cursor">
+
     <div class="column active-tab" id="left-col">
-        <h1>YFXR Clicker</h1>
+        <h1 class="sound-hover">YFXR Clicker</h1>
         <div class="counter-container">
             <div class="score"><span id="points">0</span></div>
             <div class="cps">per second: <span id="cps">0</span></div>
         </div>
         <div class="click-container">
             <div class="glow-ring"></div>
-            <div class="click-target" id="click-target">
+            <div class="click-target sound-hover" id="click-target">
                 <img src="https://i.ibb.co/fzY2zBTF/6.png" alt="YFXR" id="click-img" onerror="this.style.display='none'; document.getElementById('fallback-text').style.display='block';">
                 <div class="click-target-text" id="fallback-text" style="display:none;">CLICK ME</div>
             </div>
@@ -680,44 +719,79 @@
     </div>
 
     <div class="column" id="mid-col">
-        <h2>Stats & Progression</h2>
+        <h2 class="sound-hover">Stats & Progression</h2>
         
-        <div class="prestige-box">
-            <h3>Prestige System</h3>
+        <div class="prestige-box sound-hover">
+            <h3 class="sound-hover">Prestige System</h3>
             <p>Multiplier: <span id="prestige-mult">100</span>%</p>
             <p>Level: <span id="prestige-level">0</span> / 10</p>
             <p>Levels Waiting: <span id="pending-prestige">0</span></p>
-            <button class="prestige-btn" id="prestige-btn" disabled>Ascend</button>
+            <button class="prestige-btn sound-hover" id="prestige-btn" disabled>Ascend</button>
         </div>
 
-        <h3>Statistics</h3>
-        <div class="stat-line"><span>Total YFXR Gained</span><span id="stat-total">0</span></div>
-        <div class="stat-line"><span>Total Clicks</span><span id="stat-clicks">0</span></div>
-        <div class="stat-line"><span>Click Value</span><span id="stat-click-val">1</span></div>
-        <div class="stat-line"><span>Time Elapsed</span><span id="stat-time">0s</span></div>
+        <h3 class="sound-hover">Statistics</h3>
+        <div class="stat-line sound-hover"><span>Total YFXR Gained</span><span id="stat-total">0</span></div>
+        <div class="stat-line sound-hover"><span>Total Clicks</span><span id="stat-clicks">0</span></div>
+        <div class="stat-line sound-hover"><span>Click Value</span><span id="stat-click-val">1</span></div>
+        <div class="stat-line sound-hover"><span>Time Elapsed</span><span id="stat-time">0s</span></div>
+
+        <div class="io-container">
+            <button class="io-btn sound-hover" onclick="exportProgress()">Export Progress</button>
+            <button class="io-btn sound-hover" onclick="importProgress()">Import Progress</button>
+        </div>
     </div>
 
     <div class="column" id="right-col">
-        <h2>Shop Operations</h2>
+        <h2 class="sound-hover">Shop Operations</h2>
         <div id="shop-container"></div>
     </div>
 
     <nav class="nav-tabs">
-        <button class="nav-btn active" onclick="switchTab('left-col', this)">
+        <button class="nav-btn active sound-hover" onclick="switchTab('left-col', this)">
             <svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0-2a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/></svg>
             Game
         </button>
-        <button class="nav-btn" onclick="switchTab('mid-col', this)">
+        <button class="nav-btn sound-hover" onclick="switchTab('mid-col', this)">
             <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
             Stats
         </button>
-        <button class="nav-btn" onclick="switchTab('right-col', this)">
+        <button class="nav-btn sound-hover" onclick="switchTab('right-col', this)">
             <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
             Shop
         </button>
     </nav>
 
     <script>
+        const hoverSoundSrc = "https://cdn.pixabay.com/download/audio/2025/09/05/audio_2b677bbcc4.mp3?filename=lesiakower-minimalist-button-hover-sound-effect-399749.mp3";
+        const clickSoundSrc = "https://cdn.pixabay.com/download/audio/2026/02/09/audio_e7f34e8398.mp3?filename=soundreality-sound-of-mouse-click-4-478760.mp3";
+
+        function playHoverSound() {
+            const snd = new Audio(hoverSoundSrc);
+            snd.volume = 0.4;
+            snd.play().catch(()=>{});
+        }
+
+        function playClickSound() {
+            const snd = new Audio(clickSoundSrc);
+            snd.volume = 0.6;
+            snd.play().catch(()=>{});
+        }
+
+        function setupSoundListeners(element) {
+            element.addEventListener('mouseenter', playHoverSound);
+            element.addEventListener('click', playClickSound);
+        }
+
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('.sound-hover').forEach(el => {
+            setupSoundListeners(el);
+        });
+
         let game = {
             points: 0,
             totalPointsEarned: 0,
@@ -843,7 +917,7 @@
             container.innerHTML = "";
 
             let clickDiv = document.createElement("div");
-            clickDiv.className = "shop-item upgrade-type disabled";
+            clickDiv.className = "shop-item upgrade-type disabled sound-hover";
             clickDiv.id = "click-upgrader-item";
             clickDiv.onclick = buyClickUpgrade;
             clickDiv.innerHTML = `
@@ -857,10 +931,11 @@
                 <div class="item-count" id="click-upgrade-count">0</div>
             `;
             container.appendChild(clickDiv);
+            setupSoundListeners(clickDiv);
 
             baseItems.forEach((item, index) => {
                 let div = document.createElement("div");
-                div.className = "shop-item disabled";
+                div.className = "shop-item disabled sound-hover";
                 div.id = `shop-item-${index}`;
                 div.onclick = () => buyItem(index);
                 
@@ -875,6 +950,7 @@
                     <div class="item-count" id="count-${index}">0</div>
                 `;
                 container.appendChild(div);
+                setupSoundListeners(div);
             });
         }
 
@@ -961,6 +1037,7 @@
             game.totalClicks++;
             createParticles(e);
             updateDisplay();
+            playClickSound();
         }, {passive: false});
 
         clickTarget.addEventListener('click', function(e) {
@@ -1018,6 +1095,40 @@
             checkWinCondition();
             buildShop();
             updateDisplay();
+        }
+
+        function exportProgress() {
+            const dataStr = btoa(JSON.stringify(game));
+            navigator.clipboard.writeText(dataStr).then(() => {
+                alert("Progress code copied to clipboard!");
+            }).catch(() => {
+                alert("Failed to copy code automatically. Here is your code:\n\n" + dataStr);
+            });
+        }
+
+        function importProgress() {
+            const dataStr = prompt("Paste your progress code here:");
+            if (dataStr) {
+                try {
+                    const parsed = JSON.parse(atob(dataStr));
+                    if (parsed && typeof parsed === "object") {
+                        if(parsed.points !== undefined) game.points = parsed.points;
+                        if(parsed.totalPointsEarned !== undefined) game.totalPointsEarned = parsed.totalPointsEarned;
+                        if(parsed.totalClicks !== undefined) game.totalClicks = parsed.totalClicks;
+                        if(parsed.prestigeLevel !== undefined) game.prestigeLevel = parsed.prestigeLevel;
+                        if(parsed.timeElapsed !== undefined) game.timeElapsed = parsed.timeElapsed;
+                        if(parsed.clickUpgradeLevel !== undefined) game.clickUpgradeLevel = parsed.clickUpgradeLevel;
+                        if(parsed.itemCounts !== undefined) game.itemCounts = parsed.itemCounts;
+                        saveGame();
+                        checkWinCondition();
+                        buildShop();
+                        updateDisplay();
+                        alert("Progress imported successfully!");
+                    }
+                } catch (e) {
+                    alert("Invalid progress code!");
+                }
+            }
         }
 
         window.onload = function() {
