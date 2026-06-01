@@ -2,282 +2,676 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>YFXR Clicker</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap');
+
         * {
             box-sizing: border-box;
             user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
+
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #000000;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030303;
             color: #ffffff;
             display: flex;
             height: 100vh;
             overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 204, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(153, 51, 255, 0.04) 0%, transparent 40%);
         }
+
         .column {
             display: flex;
             flex-direction: column;
             height: 100%;
-            padding: 25px;
-            transition: all 0.3s ease;
+            padding: 30px;
+            overflow-y: auto;
+            position: relative;
         }
+
         #left-col {
-            flex: 1;
-            background-color: #000000;
+            flex: 1.1;
             align-items: center;
             justify-content: center;
-            border-right: 2px solid #111111;
+            background: rgba(4, 4, 6, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.03);
             text-align: center;
-            position: relative;
+            z-index: 2;
         }
+
         #mid-col {
-            flex: 1.2;
-            background-color: #020202;
-            border-right: 2px solid #111111;
-            overflow-y: auto;
+            flex: 1;
+            background: rgba(2, 2, 3, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.03);
+            padding-right: 20px;
         }
+
         #right-col {
-            flex: 1.3;
-            background-color: #000000;
-            overflow-y: auto;
+            flex: 1.2;
+            background: rgba(0, 0, 0, 0.4);
+            padding-left: 20px;
         }
+
+        .nav-tabs {
+            display: none;
+        }
+
         h1 {
-            font-size: 2.8rem;
-            margin-bottom: 5px;
-            color: #00ffcc;
-            text-shadow: 0 0 5px #00ffcc, 0 0 15px #00ffcc, 0 0 30px #00ffcc;
-            font-weight: 900;
-            letter-spacing: 2px;
+            font-size: 3rem;
+            margin: 0 0 10px 0;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #ff0055, #00ffcc, #9933ff, #ff0055);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rgbFlow 6s linear infinite;
+            filter: drop-shadow(0 4px 12px rgba(0, 255, 204, 0.15));
         }
+
         h2 {
-            padding-bottom: 10px;
+            font-size: 1.5rem;
+            padding-bottom: 15px;
+            color: #ffffff;
+            font-weight: 700;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            letter-spacing: -0.5px;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h3::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background: #9933ff;
+            border-radius: 2px;
+            box-shadow: 0 0 8px #9933ff;
+        }
+
+        .counter-container {
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .score {
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .score span {
+            background: linear-gradient(90deg, #ff0055, #00ffcc, #9933ff, #ff0055);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rgbFlow 6s linear infinite;
+        }
+
+        @keyframes rgbFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        .cps {
+            font-size: 1.05rem;
+            color: #88888e;
+            margin-top: 8px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cps span {
             color: #00ffcc;
-            text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
-            border-bottom: 1px solid #111111;
             font-weight: 700;
         }
-        h3 {
-            color: #9933ff;
-            text-shadow: 0 0 8px rgba(153, 51, 255, 0.6);
-        }
-        .counter-container {
-            margin-bottom: 40px;
-        }
-        .score {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-        .cps {
-            font-size: 1.1rem;
-            color: #888888;
-            margin-top: 5px;
-        }
+
         .click-container {
             position: relative;
-            width: 260px;
-            height: 260px;
+            width: 280px;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .click-target {
+
+        .glow-ring {
+            position: absolute;
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background-color: #050505;
+            background: radial-gradient(circle, rgba(0, 255, 204, 0.12) 0%, transparent 70%);
+            animation: ringGlow 4s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        .click-target {
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #11141a 0%, #050608 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s, box-shadow 0.3s;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.1), inset 0 0 15px rgba(0, 255, 204, 0.05);
-            border: 2px solid #00ffcc;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s cubic-bezier(0.15, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.6),
+                inset 0 2px 3px rgba(255, 255, 255, 0.08),
+                inset 0 -5px 15px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(0, 255, 204, 0.2);
             overflow: hidden;
         }
+
+        .click-target::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 255, 204, 0.15) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
         .click-target:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 204, 0.4), inset 0 0 20px rgba(0, 255, 204, 0.1);
-            transform: scale(1.02);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.8),
+                0 0 40px rgba(0, 255, 204, 0.25),
+                inset 0 2px 4px rgba(255, 255, 255, 0.15),
+                0 0 0 1px rgba(0, 255, 204, 0.3);
+            border-color: rgba(0, 255, 204, 0.6);
+            transform: translateY(-4px) scale(1.02);
         }
+
+        .click-target:hover::after {
+            opacity: 1;
+        }
+
         .click-target:active {
-            transform: scale(0.92);
+            transform: scale(0.94) translateY(2px);
+            box-shadow: 
+                0 10px 20px rgba(0, 0, 0, 0.7),
+                0 0 20px rgba(0, 255, 204, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.05);
+            border-color: #00ffcc;
+            transition: transform 0.05s cubic-bezier(0.1, 1, 0.1, 1);
         }
+
         .click-target img {
-            width: 75%;
-            height: 75%;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.25);
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.5));
+            transition: transform 0.3s cubic-bezier(0.15, 1, 0.3, 1);
         }
+
+        .click-target:hover img {
+            transform: scale(1.35) rotate(2deg);
+        }
+
+        .click-target:active img {
+            transform: scale(1.20);
+        }
+
         .click-target-text {
-            font-weight: bold;
+            font-weight: 800;
             color: #00ffcc;
-            text-shadow: 0 0 8px #00ffcc;
-            letter-spacing: 1px;
+            text-shadow: 0 0 12px rgba(0, 255, 204, 0.6);
+            letter-spacing: 2px;
+            font-size: 1.2rem;
         }
+
         .particle {
             position: absolute;
             pointer-events: none;
             border-radius: 50%;
-            background: #00ffcc;
-            box-shadow: 0 0 8px #00ffcc;
-            animation: explode 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+            z-index: 10;
+            will-change: transform, opacity;
+            animation: explode 0.7s cubic-bezier(0.08, 0.8, 0.15, 1) forwards;
         }
+
+        .floating-text {
+            position: absolute;
+            pointer-events: none;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 1.4rem;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 255, 204, 0.4);
+            z-index: 11;
+            will-change: transform, opacity;
+            animation: floatUp 0.8s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+        }
+
         @keyframes explode {
-            0% {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--tx), var(--ty)) scale(0);
-                opacity: 0;
-            }
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
+
+        @keyframes floatUp {
+            0% { transform: translate(-50%, -50%) translateY(0) scale(0.8); opacity: 0; }
+            20% { opacity: 1; transform: translate(-50%, -50%) translateY(-10px) scale(1.1); }
+            100% { transform: translate(-50%, -50%) translateY(-70px) scale(0.9); opacity: 0; }
+        }
+
+        @keyframes ringGlow {
+            0%, 100% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1.08); opacity: 1; }
+        }
+
         .shop-item {
             display: flex;
             align-items: center;
-            background-color: #050505;
-            padding: 14px;
+            background: rgba(15, 16, 22, 0.4);
+            padding: 16px;
             margin-bottom: 12px;
-            border-radius: 12px;
+            border-radius: 16px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s, border-color 0.3s, box-shadow 0.3s;
-            border: 1px solid #111111;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.02);
+            overflow: hidden;
         }
+
+        .shop-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(0, 255, 204, 0.04), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
         .shop-item:hover:not(.disabled) {
-            background-color: #0a0a0f;
-            border-color: #00ffcc;
-            box-shadow: 0 0 12px rgba(0, 255, 204, 0.2);
+            background: rgba(20, 23, 33, 0.6);
+            border-color: rgba(0, 255, 204, 0.25);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 255, 204, 0.05);
             transform: translateY(-2px);
         }
+
+        .shop-item:hover:not(.disabled)::before {
+            opacity: 1;
+        }
+
+        .shop-item.upgrade-type::before {
+            background: linear-gradient(90deg, rgba(153, 51, 255, 0.05), transparent);
+        }
+
+        .shop-item.upgrade-type:hover:not(.disabled) {
+            border-color: rgba(153, 51, 255, 0.35);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(153, 51, 255, 0.08);
+        }
+
         .shop-item:active:not(.disabled) {
-            transform: translateY(0);
+            transform: translateY(0) scale(0.98);
+            transition: transform 0.1s;
         }
+
         .shop-item.disabled {
-            opacity: 0.2;
+            opacity: 0.3;
             cursor: not-allowed;
+            background: rgba(5, 5, 8, 0.2);
+            border-color: transparent;
+            box-shadow: none;
         }
+
         .item-img {
-            width: 52px;
-            height: 52px;
-            background-color: #000000;
-            margin-right: 15px;
-            border-radius: 8px;
-            border: 1px solid #222222;
+            width: 56px;
+            height: 56px;
+            background: #090a0f;
+            margin-right: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
         }
+
         .item-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s;
         }
+
+        .shop-item:hover:not(.disabled) .item-img img {
+            transform: scale(1.08);
+        }
+
         .item-info {
             flex-grow: 1;
+            min-width: 0;
         }
+
         .item-name {
-            font-weight: bold;
-            font-size: 1.1rem;
+            font-weight: 700;
+            font-size: 1.05rem;
             color: #ffffff;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             transition: color 0.3s;
         }
+
         .shop-item:hover:not(.disabled) .item-name {
             color: #00ffcc;
         }
+
+        .shop-item.upgrade-type:hover:not(.disabled) .item-name {
+            color: #b366ff;
+        }
+
         .item-cost {
-            color: #ffd700;
-            font-size: 0.95rem;
-            margin-top: 2px;
+            color: #ecb813;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
+
         .item-count {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            color: #333333;
-            margin-left: 10px;
-            transition: color 0.3s;
+            color: rgba(255, 255, 255, 0.15);
+            margin-left: 15px;
+            font-variant-numeric: tabular-nums;
+            transition: all 0.3s;
         }
+
         .shop-item:hover:not(.disabled) .item-count {
-            color: #00ffcc;
+            color: rgba(0, 255, 204, 0.8);
+            transform: scale(1.05);
         }
+
+        .shop-item.upgrade-type:hover:not(.disabled) .item-count {
+            color: rgba(153, 51, 255, 0.8);
+        }
+
         .prestige-box {
-            background: #030107;
-            border: 1px solid #221133;
-            padding: 20px;
-            border-radius: 12px;
+            background: linear-gradient(145deg, rgba(15, 11, 25, 0.5) 0%, rgba(5, 3, 10, 0.5) 100%);
+            border: 1px solid rgba(153, 51, 255, 0.15);
+            padding: 24px;
+            border-radius: 20px;
             text-align: center;
-            margin-bottom: 25px;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.05);
+            transition: border-color 0.4s, box-shadow 0.4s;
         }
+
+        .prestige-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(153, 51, 255, 0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
         .prestige-box:hover {
-            border-color: #9933ff;
-            box-shadow: 0 0 15px rgba(153, 51, 255, 0.15);
+            border-color: rgba(153, 51, 255, 0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4), 0 0 25px rgba(153, 51, 255, 0.1);
         }
-        .prestige-btn {
-            background-color: transparent;
-            color: #9933ff;
-            border: 2px solid #9933ff;
-            padding: 12px 24px;
-            font-weight: bold;
-            font-size: 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 12px;
-            text-shadow: 0 0 5px rgba(153, 51, 255, 0.5);
-            box-shadow: 0 0 10px rgba(153, 51, 255, 0.1);
+
+        .prestige-box h3 {
+            justify-content: center;
+            margin-top: 0;
         }
-        .prestige-btn:hover:not(:disabled) {
-            background-color: #9933ff;
+
+        .prestige-box h3::before {
+            display: none;
+        }
+
+        .prestige-box p {
+            margin: 10px 0;
+            color: #a5a5b2;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .prestige-box p span {
             color: #ffffff;
-            box-shadow: 0 0 20px #9933ff;
-            transform: scale(1.03);
+            font-weight: 700;
         }
+
+        .prestige-btn {
+            background: transparent;
+            color: #b366ff;
+            border: 2px solid rgba(153, 51, 255, 0.5);
+            padding: 14px 28px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-top: 16px;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            letter-spacing: 0.5px;
+        }
+
+        .prestige-btn:hover:not(:disabled) {
+            background: #9933ff;
+            color: #ffffff;
+            border-color: #9933ff;
+            box-shadow: 0 0 25px rgba(153, 51, 255, 0.5), 0 4px 15px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+
+        .prestige-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
         .prestige-btn:disabled {
-            border-color: #222222;
-            color: #444444;
-            text-shadow: none;
-            box-shadow: none;
+            border-color: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.02);
             cursor: not-allowed;
+            box-shadow: none;
         }
+
         .stat-line {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #111111;
+            align-items: center;
+            padding: 14px 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             font-size: 0.95rem;
-            color: #aaaaaa;
-        }
-        .stat-line span:last-child {
-            color: #ffffff;
+            color: #9494a1;
             font-weight: 500;
         }
+
+        .stat-line span:last-child {
+            color: #ffffff;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
         ::-webkit-scrollbar {
             width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #000000;
+            background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: #111111;
-            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #222222;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 1024px) {
+            body {
+                flex-direction: column;
+                overflow: hidden;
+                position: fixed;
+                inset: 0;
+            }
+
+            .column {
+                width: 100%;
+                height: calc(100% - 65px);
+                position: absolute;
+                top: 0;
+                left: 0;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.25s ease, transform 0.25s ease;
+                transform: translateY(10px);
+                padding: 20px 20px 40px 20px;
+            }
+
+            .column.active-tab {
+                opacity: 1;
+                pointer-events: auto;
+                transform: translateY(0);
+            }
+
+            #left-col {
+                background: transparent;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                border-right: none;
+                justify-content: flex-start;
+                padding-top: 40px;
+            }
+
+            #mid-col, #right-col {
+                border-right: none;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            h1 {
+                font-size: 2.4rem;
+                margin-bottom: 5px;
+            }
+
+            .counter-container {
+                margin-bottom: 35px;
+            }
+
+            .score {
+                font-size: 2.6rem;
+            }
+
+            .click-container {
+                width: 250px;
+                height: 250px;
+                margin-top: 10px;
+            }
+
+            .nav-tabs {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 65px;
+                background: rgba(10, 10, 14, 0.85);
+                backdrop-filter: blur(25px);
+                -webkit-backdrop-filter: blur(25px);
+                border-top: 1px solid rgba(255, 255, 255, 0.05);
+                z-index: 100;
+                padding: 8px 12px calc(8px + env(safe-area-inset-bottom)) 12px;
+                justify-content: space-around;
+                align-items: center;
+            }
+
+            .nav-btn {
+                flex: 1;
+                background: transparent;
+                border: none;
+                color: #6c6c7d;
+                font-family: inherit;
+                font-weight: 700;
+                font-size: 0.85rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                cursor: pointer;
+                transition: all 0.2s;
+                max-width: 90px;
+                border-radius: 12px;
+                padding: 6px 0;
+            }
+
+            .nav-btn svg {
+                width: 20px;
+                height: 20px;
+                fill: currentColor;
+                transition: transform 0.2s;
+            }
+
+            .nav-btn.active {
+                color: #00ffcc;
+            }
+
+            .nav-btn.active svg {
+                transform: scale(1.1);
+            }
+            
+            .nav-btn:nth-child(2).active {
+                color: #9933ff;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="column" id="left-col">
+    <div class="column active-tab" id="left-col">
         <h1>YFXR Clicker</h1>
         <div class="counter-container">
-            <div class="score"><span id="points">0</span> YFXR</div>
+            <div class="score"><span id="points">0</span></div>
             <div class="cps">per second: <span id="cps">0</span></div>
         </div>
         <div class="click-container">
+            <div class="glow-ring"></div>
             <div class="click-target" id="click-target">
                 <img src="https://i.ibb.co/fzY2zBTF/6.png" alt="YFXR" id="click-img" onerror="this.style.display='none'; document.getElementById('fallback-text').style.display='block';">
                 <div class="click-target-text" id="fallback-text" style="display:none;">CLICK ME</div>
@@ -290,22 +684,38 @@
         
         <div class="prestige-box">
             <h3>Prestige System</h3>
-            <p>Current Prestige Multiplier: <span id="prestige-mult">100</span>%</p>
-            <p>Current Prestige Level: <span id="prestige-level">0</span> / 10</p>
-            <p>Prestige Levels waiting: <span id="pending-prestige">0</span></p>
+            <p>Multiplier: <span id="prestige-mult">100</span>%</p>
+            <p>Level: <span id="prestige-level">0</span> / 10</p>
+            <p>Levels Waiting: <span id="pending-prestige">0</span></p>
             <button class="prestige-btn" id="prestige-btn" disabled>Ascend</button>
         </div>
 
         <h3>Statistics</h3>
-        <div class="stat-line"><span>Total YFXR Gained:</span><span id="stat-total">0</span></div>
-        <div class="stat-line"><span>Total Clicks:</span><span id="stat-clicks">0</span></div>
-        <div class="stat-line"><span>Time Elapsed:</span><span id="stat-time">0s</span></div>
+        <div class="stat-line"><span>Total YFXR Gained</span><span id="stat-total">0</span></div>
+        <div class="stat-line"><span>Total Clicks</span><span id="stat-clicks">0</span></div>
+        <div class="stat-line"><span>Click Value</span><span id="stat-click-val">1</span></div>
+        <div class="stat-line"><span>Time Elapsed</span><span id="stat-time">0s</span></div>
     </div>
 
     <div class="column" id="right-col">
-        <h2>Shop</h2>
+        <h2>Shop Operations</h2>
         <div id="shop-container"></div>
     </div>
+
+    <nav class="nav-tabs">
+        <button class="nav-btn active" onclick="switchTab('left-col', this)">
+            <svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0-2a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/></svg>
+            Game
+        </button>
+        <button class="nav-btn" onclick="switchTab('mid-col', this)">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+            Stats
+        </button>
+        <button class="nav-btn" onclick="switchTab('right-col', this)">
+            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            Shop
+        </button>
+    </nav>
 
     <script>
         let game = {
@@ -314,6 +724,7 @@
             totalClicks: 0,
             prestigeLevel: 0,
             timeElapsed: 0,
+            clickUpgradeLevel: 0,
             itemCounts: [0, 0, 0, 0, 0]
         };
 
@@ -324,6 +735,21 @@
             { id: 3, name: "Quantum Farm",  baseCost: 12000, cps: 47,   img: "https://i.ibb.co/cGmccxV/Screenshot-2026-06-01-at-17-02-07.png" },
             { id: 4, name: "Singularity",   baseCost: 130000,cps: 260,  img: "https://i.ibb.co/nMQXQLVQ/Screenshot-2026-06-01-at-17-03-17.png" }
         ];
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.column').forEach(col => col.classList.remove('active-tab'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active-tab');
+            btn.classList.add('active');
+        }
+
+        function getClickUpgradeCost() {
+            return Math.floor(10 * Math.pow(1.6, game.clickUpgradeLevel));
+        }
+
+        function getClickValue() {
+            return (1 + game.clickUpgradeLevel) * getPrestigeMultiplier();
+        }
 
         function getCost(itemIndex) {
             return Math.floor(baseItems[itemIndex].baseCost * Math.pow(1.15, game.itemCounts[itemIndex]));
@@ -351,13 +777,13 @@
         function checkWinCondition() {
             if (game.prestigeLevel >= 10) {
                 localStorage.removeItem("yfxr_clicker_save");
-                window.location.href = "https://yfxr.qzz.io/winner/";
+                window.location.href = "https://yfxr.qzz.io/clicker/";
             }
         }
 
         function formatNumber(num) {
-            if (num >= 1e9) return (num / 1e9).toFixed(2) + " Billion";
-            if (num >= 1e6) return (num / 1e6).toFixed(2) + " Million";
+            if (num >= 1e9) return (num / 1e9).toFixed(2) + " B";
+            if (num >= 1e6) return (num / 1e6).toFixed(2) + " M";
             return Math.floor(num).toLocaleString();
         }
 
@@ -367,6 +793,7 @@
             
             document.getElementById("stat-total").innerText = formatNumber(game.totalPointsEarned);
             document.getElementById("stat-clicks").innerText = game.totalClicks.toLocaleString();
+            document.getElementById("stat-click-val").innerText = formatNumber(getClickValue());
             document.getElementById("stat-time").innerText = game.timeElapsed + "s";
             
             let pending = calculatePendingPrestige();
@@ -377,10 +804,22 @@
             let prestigeBtn = document.getElementById("prestige-btn");
             if (pending > 0) {
                 prestigeBtn.disabled = false;
-                prestigeBtn.innerText = `Ascend (+${pending} Level${pending > 1 ? 's' : ''})`;
+                prestigeBtn.innerText = `Ascend (+${pending})`;
             } else {
                 prestigeBtn.disabled = true;
-                prestigeBtn.innerText = "Ascend (Requires 1M total YFXR)";
+                prestigeBtn.innerText = "Locked (Req. 1M Total)";
+            }
+
+            let clickCost = getClickUpgradeCost();
+            let clickElement = document.getElementById("click-upgrader-item");
+            if (clickElement) {
+                document.getElementById("click-upgrade-cost").innerText = formatNumber(clickCost);
+                document.getElementById("click-upgrade-count").innerText = game.clickUpgradeLevel;
+                if (game.points >= clickCost) {
+                    clickElement.classList.remove("disabled");
+                } else {
+                    clickElement.classList.add("disabled");
+                }
             }
 
             baseItems.forEach((item, index) => {
@@ -402,6 +841,23 @@
         function buildShop() {
             const container = document.getElementById("shop-container");
             container.innerHTML = "";
+
+            let clickDiv = document.createElement("div");
+            clickDiv.className = "shop-item upgrade-type disabled";
+            clickDiv.id = "click-upgrader-item";
+            clickDiv.onclick = buyClickUpgrade;
+            clickDiv.innerHTML = `
+                <div class="item-img" style="border-color: rgba(153, 51, 255, 0.3); background: rgba(153, 51, 255, 0.05);">
+                    <span style="color: #b366ff; font-weight: bold; font-size: 1.4rem;">👆</span>
+                </div>
+                <div class="item-info">
+                    <div class="item-name">Sharp Pointer</div>
+                    <div class="item-cost"><svg width="12" height="12" viewBox="0 0 24 24" fill="#ecb813"><path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10s-10-4.48-10-10s4.48-10 10-10zm1 14v-2h2v-2h-2v-2h-2v2H9v2h2v2h2z"/></svg> <span id="click-upgrade-cost">10</span></div>
+                </div>
+                <div class="item-count" id="click-upgrade-count">0</div>
+            `;
+            container.appendChild(clickDiv);
+
             baseItems.forEach((item, index) => {
                 let div = document.createElement("div");
                 div.className = "shop-item disabled";
@@ -414,12 +870,22 @@
                     </div>
                     <div class="item-info">
                         <div class="item-name">${item.name}</div>
-                        <div class="item-cost">Cost: <span id="cost-${index}">${item.baseCost}</span></div>
+                        <div class="item-cost"><svg width="12" height="12" viewBox="0 0 24 24" fill="#ecb813"><path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10s-10-4.48-10-10s4.48-10 10-10zm1 14v-2h2v-2h-2v-2h-2v2H9v2h2v2h2z"/></svg> <span id="cost-${index}">${item.baseCost}</span></div>
                     </div>
                     <div class="item-count" id="count-${index}">0</div>
                 `;
                 container.appendChild(div);
             });
+        }
+
+        function buyClickUpgrade() {
+            let cost = getClickUpgradeCost();
+            if (game.points >= cost) {
+                game.points -= cost;
+                game.clickUpgradeLevel++;
+                updateDisplay();
+                saveGame();
+            }
         }
 
         function buyItem(index) {
@@ -437,61 +903,82 @@
             const rect = target.getBoundingClientRect();
             
             let clickX, clickY;
-            if (e.clientX && e.clientY) {
+            if (e && e.clientX && e.clientY) {
                 clickX = e.clientX - rect.left;
                 clickY = e.clientY - rect.top;
+            } else if (e && e.touches && e.touches[0]) {
+                clickX = e.touches[0].clientX - rect.left;
+                clickY = e.touches[0].clientY - rect.top;
             } else {
                 clickX = rect.width / 2;
                 clickY = rect.height / 2;
             }
 
-            const colors = ['#00ffcc', '#00ffaa', '#00ffff', '#ffffff', '#9933ff'];
-            const particleCount = 12;
+            const valText = document.createElement("div");
+            valText.className = "floating-text";
+            valText.innerText = `+${formatNumber(getClickValue())}`;
+            valText.style.left = `${clickX}px`;
+            valText.style.top = `${clickY}px`;
+            target.appendChild(valText);
+            setTimeout(() => valText.remove(), 800);
+
+            const colors = ['#00ffcc', '#00ffff', '#ffffff', '#9933ff'];
+            const particleCount = window.innerWidth < 768 ? 6 : 12;
 
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement("div");
                 particle.className = "particle";
-                
                 particle.style.left = `${clickX}px`;
                 particle.style.top = `${clickY}px`;
                 
-                const size = Math.random() * 6 + 4;
+                const size = Math.random() * 4 + 3;
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 
                 particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.boxShadow = `0 0 10px ${particle.style.background}`;
+                particle.style.boxShadow = `0 0 8px ${particle.style.background}`;
 
                 const angle = Math.random() * Math.PI * 2;
-                const velocity = Math.random() * 80 + 40;
+                const velocity = Math.random() * 60 + 30;
                 const tx = Math.cos(angle) * velocity;
                 const ty = Math.sin(angle) * velocity;
 
                 particle.style.setProperty('--tx', `${tx}px`);
                 particle.style.setProperty('--ty', `${ty}px`);
 
-                target.parentNode.appendChild(particle);
-
-                setTimeout(() => {
-                    particle.remove();
-                }, 600);
+                target.appendChild(particle);
+                setTimeout(() => particle.remove(), 700);
             }
         }
 
-        document.getElementById("click-target").onclick = function(e) {
-            let clickValue = 1 * getPrestigeMultiplier();
+        const clickTarget = document.getElementById("click-target");
+        
+        clickTarget.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            let clickValue = getClickValue();
             game.points += clickValue;
             game.totalPointsEarned += clickValue;
             game.totalClicks++;
             createParticles(e);
             updateDisplay();
-        };
+        }, {passive: false});
+
+        clickTarget.addEventListener('click', function(e) {
+            if (e.pointerType === 'touch') return;
+            let clickValue = getClickValue();
+            game.points += clickValue;
+            game.totalPointsEarned += clickValue;
+            game.totalClicks++;
+            createParticles(e);
+            updateDisplay();
+        });
 
         document.getElementById("prestige-btn").onclick = function() {
             let pending = calculatePendingPrestige();
             if (pending > 0) {
                 game.prestigeLevel += pending;
                 game.points = 0;
+                game.clickUpgradeLevel = 0; 
                 game.itemCounts = [0, 0, 0, 0, 0];
                 checkWinCondition();
                 updateDisplay();
@@ -525,6 +1012,7 @@
                 if(parsed.totalClicks !== undefined) game.totalClicks = parsed.totalClicks;
                 if(parsed.prestigeLevel !== undefined) game.prestigeLevel = parsed.prestigeLevel;
                 if(parsed.timeElapsed !== undefined) game.timeElapsed = parsed.timeElapsed;
+                if(parsed.clickUpgradeLevel !== undefined) game.clickUpgradeLevel = parsed.clickUpgradeLevel;
                 if(parsed.itemCounts !== undefined) game.itemCounts = parsed.itemCounts;
             }
             checkWinCondition();
