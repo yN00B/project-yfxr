@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YFXR Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030303;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 50% 10%, rgba(153, 51, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 50% 90%, rgba(0, 255, 204, 0.04) 0%, transparent 50%);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            color: #ffffff;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .game-container {
+            display: flex;
+            gap: 25px;
+            max-width: 800px;
+            width: 100%;
+            padding: 0 20px;
+            z-index: 10;
+            justify-content: center;
+        }
+
+        .game-card {
+            flex: 1;
+            max-width: 340px;
+            text-decoration: none;
+            color: #ffffff;
+            background: rgba(15, 16, 22, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.03);
+            transition: 
+                transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .game-card:nth-child(1) { animation-delay: 0.1s; }
+        .game-card:nth-child(2) { animation-delay: 0.2s; }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.04), transparent 70%);
+            opacity: 1;
+            transition: opacity 0.4s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(0, 255, 204, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.6), 
+                0 0 30px rgba(0, 255, 204, 0.05),
+                inset 0 1px 1px rgba(255, 255, 255, 0.08);
+        }
+
+        .game-card.purple-glow:hover {
+            border-color: rgba(153, 51, 255, 0.4);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.6), 
+                0 0 30px rgba(153, 51, 255, 0.08),
+                inset 0 1px 1px rgba(255, 255, 255, 0.08);
+        }
+
+        .game-card:active {
+            transform: translateY(-4px) scale(0.98);
+            transition: transform 0.1s ease;
+        }
+
+        .game-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .game-card:hover .game-icon {
+            transform: scale(1.15) rotate(4deg);
+        }
+
+        .game-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+            transition: color 0.3s;
+        }
+
+        .game-card:hover .game-title {
+            color: #00ffcc;
+        }
+
+        .game-card.purple-glow:hover .game-title {
+            color: #b366ff;
+        }
+
+        .game-desc {
+            font-size: 0.95rem;
+            color: #88888e;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        @keyframes fadeInDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            .game-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .game-card {
+                width: 100%;
+            }
+            h1 {
+                font-size: 2.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>yfxr</h1>
+    </header>
+
+    <div class="game-container">
+        <a href="https://yfxr.qzz.io/clicker/" class="game-card">
+            <div class="game-icon">⚡</div>
+            <div class="game-title">YFXR Clicker</div>
+            <div class="game-desc">Just a crappy copy of cookie clicker.</div>
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=KK5uGdYGo80" class="game-card purple-glow">
+            <div class="game-icon">🔮</div>
+            <div class="game-title">??</div>
+            <div class="game-desc">coming soon...</div>
+        </a>
+    </div>
+
+</body>
+</html>
