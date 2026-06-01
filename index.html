@@ -7,12 +7,11 @@
     <style>
         :root {
             --bg-color: #000000;
-            --card-bg: rgba(40, 44, 52, 0.3);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-color: #00d2ff;
-            --accent-hover: #38bdf8;
-            --game-accent: #a855f7;
+            --card-bg: #0a0a0a;
+            --text-main: #ffffff;
+            --text-muted: #808080;
+            --border-color: #333333;
+            --accent-color: #ffffff;
         }
 
         html {
@@ -23,15 +22,15 @@
             width: 10px;
         }
         ::-webkit-scrollbar-track {
-            background: #050505;
+            background: #000000;
         }
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, var(--accent-color), var(--game-accent));
+            background: #333333;
             border-radius: 5px;
             border: 2px solid #000;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-hover);
+            background: #555555;
         }
 
         body {
@@ -45,30 +44,6 @@
             position: relative;
         }
 
-        body::before {
-            content: '';
-            position: absolute;
-            top: -10%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 210, 255, 0.15) 0%, rgba(0,0,0,0) 70%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        body::after {
-            content: '';
-            position: absolute;
-            bottom: 10%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, rgba(0,0,0,0) 70%);
-            z-index: -1;
-            pointer-events: none;
-        }
 
         .container {
             max-width: 1100px;
@@ -77,14 +52,13 @@
         }
 
         header {
-            background-color: rgba(40, 44, 52, 0.4);
+            background-color: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .nav-wrapper {
@@ -98,16 +72,7 @@
             font-size: 1.5rem;
             font-weight: 800;
             letter-spacing: 1px;
-            background: linear-gradient(to left, #00d2ff, #a855f7, #ff007f, #00d2ff);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: rgbFlow 6s linear infinite;
-        }
-
-        @keyframes rgbFlow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 300% 50%; }
+            color: #ffffff;
         }
 
         .nav-links {
@@ -124,43 +89,19 @@
             font-weight: 500;
             font-size: 0.95rem;
             padding: 8px 16px;
-            background-color: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             transition: all 0.3s ease;
         }
 
         .nav-links a:hover, .nav-links a.active {
-            color: var(--accent-color);
-            background-color: rgba(0, 210, 255, 0.05);
-            border-color: rgba(0, 210, 255, 0.3);
-            transform: translateY(-1px);
-        }
-
-        .nav-links a.games-tab {
-            color: var(--game-accent);
-            border-color: rgba(168, 85, 247, 0.1);
-            position: relative;
-        }
-
-        .nav-links a.games-tab:hover {
-            color: #c084fc;
-            background-color: rgba(168, 85, 247, 0.05);
-            border-color: rgba(168, 85, 247, 0.4);
-        }
-        
-        .nav-links a.games-tab::after {
-            content: '⚡';
-            font-size: 0.7rem;
-            position: absolute;
-            top: -4px;
-            right: -4px;
+            color: #ffffff;
+            border-color: #ffffff;
         }
 
         .hero {
             padding: 220px 0 140px 0;
             text-align: center;
-            will-change: transform, opacity;
         }
 
         .hero h1 {
@@ -168,7 +109,6 @@
             font-weight: 800;
             margin-bottom: 20px;
             letter-spacing: -0.5px;
-            text-shadow: 0 0 40px rgba(0, 210, 255, 0.2);
         }
 
         .hero p {
@@ -192,33 +132,26 @@
             text-decoration: none;
             transition: all 0.3s ease;
             cursor: pointer;
+            border: 1px solid #ffffff;
         }
 
         .btn-primary {
-            background-color: var(--accent-color);
-            color: #000;
+            background-color: #ffffff;
+            color: #000000;
         }
 
         .btn-primary:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+            background-color: #cccccc;
         }
 
         .btn-secondary {
-            background-color: rgba(40, 44, 52, 0.3);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            color: var(--text-main);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background-color: transparent;
+            color: #ffffff;
         }
 
         .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-color: var(--game-accent);
-            color: var(--game-accent);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(168, 85, 247, 0.15);
+            background-color: #ffffff;
+            color: #000000;
         }
 
         #projects-section {
@@ -233,27 +166,17 @@
 
         .card {
             background-color: var(--card-bg);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             border-radius: 12px;
             padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
             cursor: pointer;
             transform: translateY(150px);
             opacity: 0;
-            will-change: transform, opacity;
-            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s linear;
+            transition: border-color 0.3s ease;
         }
 
         .card:hover {
-            background-color: rgba(40, 44, 52, 0.5);
-            border-color: rgba(0, 210, 255, 0.4);
-            box-shadow: 0 15px 30px rgba(0, 210, 255, 0.1);
-        }
-
-        .card.featured-card:hover {
-            border-color: rgba(168, 85, 247, 0.5);
-            box-shadow: 0 15px 30px rgba(168, 85, 247, 0.1);
+            border-color: #ffffff;
         }
 
         .card h3 {
@@ -264,26 +187,14 @@
 
         .card p {
             color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 0;
         }
 
         footer {
             text-align: center;
             padding: 40px 0;
             color: var(--text-muted);
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid var(--border-color);
             margin-top: 100px;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .nav-links { flex-direction: column; gap: 10px; width: 100%; align-items: center; }
-            .nav-links a { display: block; width: 80%; text-align: center; }
-            .nav-wrapper { flex-direction: column; height: auto; padding: 15px 0; gap: 15px; }
-            .btn-group { flex-direction: column; align-items: center; }
-            .btn { width: 80%; text-align: center; }
         }
     </style>
 </head>
@@ -296,7 +207,7 @@
                 <ul class="nav-links">
                     <li><a href="#" class="active audiolink">Home</a></li>
                     <li><a href="https://yfxr.qzz.io/shop/" class="audiolink">Shop</a></li>
-                    <li><a href="https://yfxr.qzz.io/games/" class="games-tab audiolink">Games</a></li>
+                    <li><a href="https://yfxr.qzz.io/games/" class="audiolink">Games</a></li>
                     <li><a href="https://yfxr.qzz.io/downloads/" class="audiolink">Downloads</a></li>
                 </ul>
             </nav>
@@ -304,7 +215,6 @@
     </header>
 
     <main class="container">
-        
         <section class="hero" id="hero-track">
             <h1>YFXR website 1.0</h1>
             <p>i believe that u either want to see trash websites or have absolutely nothing to do</p>
@@ -314,27 +224,26 @@
             </div>
         </section>
 
-        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.08); max-width: 80%; margin: 0 auto;">
+        <hr style="border: 0; border-top: 1px solid #333; max-width: 80%; margin: 0 auto;">
 
         <section id="projects-section">
             <div class="grid">
                 <div class="card audiolink">
-                    <h3>👨🏿 Useless html skills!!</h3>
+                    <h3>Useless html skills!!</h3>
                     <p>yeah bro im just an unemployed man in his mothers basement</p>
                 </div>
                 
-                <div class="card featured-card audiolink">
-                    <h3>🗑️ games</h3>
+                <div class="card audiolink">
+                    <h3>Games</h3>
                     <p>trashy games that u will get bored of in less than an instant ! maybe worth it </p>
                 </div>
 
                 <div class="card audiolink">
-                    <h3>👏🏿 ehh downloads</h3>
+                    <h3>Ehh downloads</h3>
                     <p>i put some software and useless or useful stuff there when im free i guess ?</p>
                 </div>
             </div>
         </section>
-
     </main>
 
     <footer>
@@ -349,7 +258,6 @@
 
         window.addEventListener('scroll', () => {
             let scrollValue = window.scrollY;
-            
             if (scrollValue > 5) {
                 heroSection.style.transform = `translateX(${scrollValue * 0.4}px)`;
                 heroSection.style.opacity = Math.max(0, 1 - scrollValue / 400);
@@ -358,35 +266,14 @@
                 heroSection.style.opacity = 1;
             }
 
-            cards.forEach((card, index) => {
+            cards.forEach((card) => {
                 let cardTop = card.getBoundingClientRect().top;
                 let triggerPoint = window.innerHeight * 0.85;
-                
                 if (cardTop < triggerPoint) {
-                    let progress = (triggerPoint - cardTop) / 250;
-                    progress = Math.min(Math.max(progress, 0), 1);
-                    
-                    let currentY = 150 - (progress * 150);
-                    let currentOpacity = progress;
-                    
-                    card.style.transform = `translateY(${currentY}px)`;
-                    card.style.opacity = currentOpacity;
-                } else {
-                    card.style.transform = 'translateY(150px)';
-                    card.style.opacity = 0;
+                    let progress = Math.min(Math.max((triggerPoint - cardTop) / 250, 0), 1);
+                    card.style.transform = `translateY(${150 - (progress * 150)}px)`;
+                    card.style.opacity = progress;
                 }
-            });
-        });
-
-        const hoverSound = new Audio("https://cdn.pixabay.com/download/audio/2025/09/05/audio_2b677bbcc4.mp3?filename=lesiakower-minimalist-button-hover-sound-effect-399749.mp3");
-        hoverSound.volume = 0.4;
-
-        const audioElements = document.querySelectorAll('.audiolink');
-
-        audioElements.forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                hoverSound.currentTime = 0;
-                hoverSound.play().catch(error => {});
             });
         });
     </script>
