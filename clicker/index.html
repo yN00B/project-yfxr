@@ -724,7 +724,7 @@
         <div class="prestige-box sound-hover">
             <h3 class="sound-hover">Prestige System</h3>
             <p>Multiplier: <span id="prestige-mult">100</span>%</p>
-            <p>Level: <span id="prestige-level">0</span> / 10</p>
+            <p>Level: <span id="prestige-level">0</span></p>
             <p>Levels Waiting: <span id="pending-prestige">0</span></p>
             <button class="prestige-btn sound-hover" id="prestige-btn" disabled>Ascend</button>
         </div>
@@ -763,7 +763,7 @@
 
     <script>
         const hoverSoundSrc = "https://cdn.pixabay.com/download/audio/2025/09/05/audio_2b677bbcc4.mp3?filename=lesiakower-minimalist-button-hover-sound-effect-399749.mp3";
-        const clickSoundSrc = "https://cdn.pixabay.com/download/audio/2026/02/09/audio_e7f34e8398.mp3?filename=soundreality-sound-of-mouse-click-4-478760.mp3";
+        const clickSoundSrc = "https://assets.mixkit.co/active_storage/sfx/3124/3124.wav";
 
         function playHoverSound() {
             const snd = new Audio(hoverSoundSrc);
@@ -849,10 +849,7 @@
         }
 
         function checkWinCondition() {
-            if (game.prestigeLevel >= 10) {
-                localStorage.removeItem("yfxr_clicker_save");
-                window.location.href = "https://yfxr.qzz.io/clicker/";
-            }
+            return;
         }
 
         function formatNumber(num) {
