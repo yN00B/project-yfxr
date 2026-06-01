@@ -1,67 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Downloads</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0d0d0d;
-      color: #f5f5f5;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      color: #4cafef;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      margin: 10px 0;
-    }
-    a {
-      color: #00ffcc;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --accent: #ffffff;
+            --text-main: #f5f5f5;
+            --text-dim: #a0a0a0;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-weight: 600;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        #search {
+            width: 100%;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        #search:focus {
+            border-color: var(--accent);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .file-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease, background 0.2s ease;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .file-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .file-item a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .loader {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-dim);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
-  <h1>Downloads</h1>
-  <ul id="file-list">Loading files...</ul>
 
-  <script>
+<div class="container">
+    <header>
+        <h1>Downloads</h1>
+        <p style="color: var(--text-dim);">Select a file to download.</p>
+    </header>
+
+    <input type="text" id="search" placeholder="Search files...">
+
+    <div id="file-list-container">
+        <div class="loader">Loading files...</div>
+    </div>
+</div>
+
+<script>
+    const repo = "yn00b/yn00b.github.io";
+    const path = "files";
+    const fileListContainer = document.getElementById("file-list-container");
+    const searchInput = document.getElementById("search");
+    let allFiles = [];
+
     async function loadFiles() {
-      const repo = "yn00b/yn00b.github.io"; // your repo
-      const path = "files"; // folder name
-
-      try {
-        const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`);
-        const files = await res.json();
-
-        let list = document.getElementById("file-list");
-        list.innerHTML = ""; // clear "Loading..."
-
-        files.forEach(file => {
-          if (file.type === "file") {
-            let li = document.createElement("li");
-            let a = document.createElement("a");
-            a.href = file.download_url;
-            a.textContent = file.name;
-            li.appendChild(a);
-            list.appendChild(li);
-          }
-        });
-      } catch (err) {
-        document.getElementById("file-list").innerHTML = "Error loading files.";
-      }
+        try {
+            const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`);
+            if (!res.ok) throw new Error("Failed to fetch");
+            allFiles = await res.json();
+            renderFiles(allFiles);
+        } catch (err) {
+            fileListContainer.innerHTML = "<div class='loader'>Unable to load files.</div>";
+        }
     }
+
+    function renderFiles(files) {
+        fileListContainer.innerHTML = "";
+        const ul = document.createElement("ul");
+
+        files.filter(f => f.type === "file").forEach(file => {
+            const li = document.createElement("li");
+            li.className = "file-item";
+            li.innerHTML = `
+                <span>${file.name}</span>
+                <a href="${file.download_url}" target="_blank">Download</a>
+            `;
+            ul.appendChild(li);
+        });
+
+        fileListContainer.appendChild(ul);
+    }
+
+    searchInput.addEventListener("input", (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = allFiles.filter(f => f.name.toLowerCase().includes(term));
+        renderFiles(filtered);
+    });
+
     loadFiles();
-  </script>
+</script>
+
 </body>
 </html>
