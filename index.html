@@ -1,206 +1,520 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://fundingchoicesmessages.google.com/i/pub-1260181185811054?ers=1"></script><script>(function() {function signalGooglefcPresent() {if (!window.frames['googlefcPresent']) {if (document.body) {const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe);} else {setTimeout(signalGooglefcPresent, 0);}}}signalGooglefcPresent();})();</script>
+    <script>
+        (function() {
+            function signalGooglefcPresent() {
+                if (!window.frames['googlefcPresent']) {
+                    if (document.body) {
+                        const iframe = document.createElement('iframe');
+                        iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;';
+                        iframe.style.display = 'none';
+                        iframe.name = 'googlefcPresent';
+                        document.body.appendChild(iframe);
+                    } else {
+                        setTimeout(signalGooglefcPresent, 0);
+                    }
+                }
+            }
+            signalGooglefcPresent();
+        })();
+    </script>
     <meta name="google-adsense-account" content="ca-pub-1260181185811054">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YFXR Hub</title>
+    <title>YFXR // HOME</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400&family=Plus+Jakarta+Sans:wght@200;300;400;700;800&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-color: #000000;
-            --card-bg: #0a0a0a;
-            --text-main: #ffffff;
-            --text-muted: #808080;
-            --border-color: #333333;
-            --accent-color: #ffffff;
+            --bg-absolute: #000000;
+            --text-pure: #ffffff;
+            --text-muted: #888888;
+            --text-ghost: #222222;
+            --border-heavy: #ffffff;
+            --border-subtle: #222222;
+            --glass-monolith: rgba(5, 5, 5, 0.85);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         html {
+            background-color: var(--bg-absolute);
+            color: var(--text-pure);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
             scroll-behavior: smooth;
         }
-        
+
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #000000;
+            background: var(--bg-absolute);
         }
         ::-webkit-scrollbar-thumb {
-            background: #333333;
-            border-radius: 5px;
-            border: 2px solid #000;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555555;
+            background: #ffffff;
+            box-shadow: 0 0 15px #ffffff;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
+            background-color: var(--bg-absolute);
             overflow-x: hidden;
-            position: relative;
         }
 
+        #matrix-webgl-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .kinetic-lens-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            pointer-events: none;
+            background: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 50%, rgba(0, 0, 0, 0.1) 50%),
+                radial-gradient(circle at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.8) 100%);
+            background-size: 100% 4px, 100% 100%;
+        }
+
+        .exposure-flash-overlay {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            z-index: 2000;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            opacity: 0;
+            transition: opacity 0.8s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        .audio-unlock-shroud {
+            position: fixed;
+            inset: 0;
+            background: #000000;
+            z-index: 5000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+            transition: opacity 1s cubic-bezier(0.1, 1, 0.1, 1), transform 1s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        .audio-unlock-shroud.dismissed {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.1);
+        }
+
+        .warning-box {
+            max-width: 500px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            background: rgba(5, 5, 5, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .warning-box h2 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .warning-box p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .audio-unlock-btn {
+            background: transparent;
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            padding: 24px 60px;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 30px rgba(255,255,255,0.1);
+        }
+
+        .audio-unlock-btn:hover {
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 0 60px rgba(255,255,255,0.8);
         }
 
         header {
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(12px);
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-subtle);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
         }
 
         .nav-wrapper {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 70px;
+            height: 100px;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: #ffffff;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 12px;
+            color: var(--text-pure);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 15px;
-            margin: 0;
-            padding: 0;
+            gap: 10px;
         }
 
         .nav-links a {
             color: var(--text-muted);
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            padding: 8px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+            font-weight: 400;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 12px 24px;
+            border: 1px solid transparent;
             transition: all 0.3s ease;
         }
 
         .nav-links a:hover, .nav-links a.active {
-            color: #ffffff;
+            color: var(--text-pure);
             border-color: #ffffff;
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+        }
+
+        .custom-cursor-dot {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px #ffffff, 0 0 30px #ffffff;
+            display: none;
+        }
+
+        .custom-cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
+            display: none;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .custom-cursor-dot, .custom-cursor-ring {
+                display: block;
+            }
+            * {
+                cursor: none;
+            }
         }
 
         .hero {
-            padding: 220px 0 140px 0;
+            position: relative;
+            z-index: 10;
+            padding: 320px 0 200px 0;
             text-align: center;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.5s cubic-bezier(0.1, 1, 0.1, 1);
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            letter-spacing: -0.5px;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 6.5rem;
+            font-weight: 700;
+            line-height: 0.95;
+            margin-bottom: 40px;
+            letter-spacing: -3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.7), 0 0 80px rgba(255, 255, 255, 0.4);
         }
 
         .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
+            font-size: 1.25rem;
+            font-weight: 200;
+            color: var(--text-pure);
             max-width: 600px;
-            margin: 0 auto 40px auto;
+            margin: 0 auto 60px auto;
+            letter-spacing: 2px;
+            line-height: 1.8;
+            opacity: 0.8;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
         .btn-group {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 25px;
+            flex-wrap: wrap;
         }
 
         .btn {
             display: inline-block;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-weight: 600;
+            padding: 22px 50px;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 4px;
             text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid #ffffff;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+            border: 1px solid var(--border-heavy);
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-primary {
-            background-color: #ffffff;
-            color: #000000;
+            background-color: var(--text-pure);
+            color: var(--bg-absolute);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
         }
 
         .btn-primary:hover {
-            background-color: #cccccc;
+            background-color: var(--bg-absolute);
+            color: var(--text-pure);
+            box-shadow: 0 0 60px rgba(255, 255, 255, 1), inset 0 0 20px rgba(255, 255, 255, 0.6);
+            transform: scale(1.05);
         }
 
         .btn-secondary {
             background-color: transparent;
-            color: #ffffff;
+            color: var(--text-pure);
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
         .btn-secondary:hover {
-            background-color: #ffffff;
+            border-color: var(--border-heavy);
+            background: #ffffff;
             color: #000000;
+            box-shadow: 0 0 60px rgba(255, 255, 255, 0.8);
+            transform: scale(1.05);
+        }
+
+        .structural-divider {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 auto;
+            box-shadow: 0 0 20px #ffffff;
+        }
+
+        .structural-divider::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: -5px;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            background: var(--text-pure);
+            box-shadow: 0 0 15px #ffffff, 0 0 30px #ffffff;
+            border-radius: 50%;
         }
 
         #projects-section {
-            padding: 60px 0 120px 0;
+            position: relative;
+            z-index: 10;
+            padding: 160px 0 240px 0;
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            gap: 50px;
         }
 
         .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 30px;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            transform: translateY(150px);
+            background-color: #000000;
+            border: 1px solid var(--border-subtle);
+            padding: 60px 45px;
+            position: relative;
             opacity: 0;
-            transition: border-color 0.3s ease;
+            transform: translateY(60px);
+            transition: all 0.6s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .card:hover {
             border-color: #ffffff;
+            background: #ffffff;
+            box-shadow: 0 0 80px rgba(255, 255, 255, 0.3);
+        }
+
+        .card:hover h3, .card:hover p, .card:hover .card-index {
+            color: #000000 !important;
+        }
+
+        .card-index {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            display: block;
+            transition: color 0.3s ease;
         }
 
         .card h3 {
-            font-size: 1.4rem;
-            margin-top: 0;
-            margin-bottom: 15px;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            transition: color 0.3s ease;
         }
 
         .card p {
             color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.8;
+            font-weight: 300;
+            transition: color 0.3s ease;
+        }
+
+        .card-corner-line {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            width: 16px;
+            height: 16px;
+            border-right: 2px solid transparent;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .card-corner-line {
+            border-color: #000000;
+            transform: translate(6px, 6px);
+        }
+
+        .telemetry-hud {
+            position: fixed;
+            bottom: 40px;
+            left: 50px;
+            right: 50px;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            z-index: 50;
+            pointer-events: none;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .telemetry-hud span {
+            color: var(--text-pure);
+            font-weight: bold;
         }
 
         footer {
+            position: relative;
+            z-index: 10;
             text-align: center;
-            padding: 40px 0;
+            padding: 100px 0;
+            border-top: 1px solid var(--border-subtle);
+            background: var(--bg-absolute);
+        }
+
+        footer p {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            border-top: 1px solid var(--border-color);
-            margin-top: 100px;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 992px) {
+            .hero { padding: 180px 0 100px 0; }
+            .hero h1 { font-size: 3rem; letter-spacing: -1px; }
+            .hero p { font-size: 1rem; margin-bottom: 40px; }
+            .nav-links, .telemetry-hud { display: none; }
+            .container { padding: 0 24px; }
+            .logo { font-size: 1.3rem; letter-spacing: 6px; }
+            .nav-wrapper { height: 70px; }
+            .btn { padding: 16px 32px; font-size: 0.7rem; width: 100%; text-align: center; }
+            .btn-group { gap: 15px; }
+            .grid { gap: 30px; }
+            .card { padding: 40px 30px; }
         }
     </style>
 </head>
 <body>
+
+    <div class="audio-unlock-shroud" id="audio-shroud">
+        <div class="warning-box">
+            <h2>PHOTOSENSITIVITY WARNING</h2>
+            <p>This interface contains high-frequency black-and-white strobing effects, flash triggers, and intense visual mutations. Discontinue immediately if you experience dizziness, altered vision, or muscle twitches.</p>
+        </div>
+        <button class="audio-unlock-btn" onclick="initializePremiumAudio()">Enter yfxr</button>
+    </div>
+
+    <div class="kinetic-lens-layer"></div>
+    <div class="exposure-flash-overlay" id="flash-screen"></div>
+    <div class="custom-cursor-dot" id="c-dot"></div>
+    <div class="custom-cursor-ring" id="c-ring"></div>
+
+    <canvas id="matrix-webgl-canvas"></canvas>
 
     <header>
         <div class="container nav-wrapper">
@@ -218,66 +532,291 @@
 
     <main class="container">
         <section class="hero" id="hero-track">
-            <h1>YFXR website 1.0</h1>
-            <p>Just a bored guy that wants to have fun</p>
+            <h1>YFXR HOMEPAGE</h1>
+            <p>Make sure to text me if you find any glitch.</p>
             <div class="btn-group">
-                <a href="https://yfxr.qzz.io/music/" class="btn btn-primary audiolink">Music Visualizer</a>
-                <a href="https://yfxr.qzz.io/games/" class="btn btn-secondary audiolink">Play my games ➔</a>
+                <a href="https://yfxr.qzz.io/music/" class="btn btn-primary audiolink">Music Player</a>
+                <a href="https://yfxr.qzz.io/games/" class="btn btn-secondary audiolink">Play Games</a>
             </div>
         </section>
 
-        <hr style="border: 0; border-top: 1px solid #333; max-width: 80%; margin: 0 auto;">
+        <div class="structural-divider"></div>
 
         <section id="projects-section">
             <div class="grid">
                 <div class="card audiolink">
-                    <h3>Useless html skills!!</h3>
-                    <p>yeah bro im just an unemployed man in his mothers basement</p>
+                    <span class="card-index">// PLAY_GAMES</span>
+                    <h3>GAMES</h3>
+                    <p>I lack ideas for games so make sure to send me recommendations on my discord:yfxr.</p>
+                    <div class="card-corner-line"></div>
                 </div>
                 
                 <div class="card audiolink">
-                    <h3>🎮 Games</h3>
-                    <p>Decent games that you will play for more than an hour</p>
+                    <span class="card-index">// KNOWLEDGE</span>
+                    <h3>GREAT WEBSITE DESIGNER</h3>
+                    <p>Contact yfxr in discord for fancy looking websites like this one.</p>
+                    <div class="card-corner-line"></div>
                 </div>
 
                 <div class="card audiolink">
-                    <h3>🛜 downloads</h3>
-                    <p>some useful links that will definetly come to use</p>
+                    <span class="card-index">// DOWNLOADS</span>
+                    <h3>SECURE DOWNLOADS</h3>
+                    <p>Secure downloads from github links.</p>
+                    <div class="card-corner-line"></div>
                 </div>
             </div>
         </section>
     </main>
 
+    <div class="telemetry-hud">
+        <div>SYS_MATRIX: <span id="tel-entropy">0.0000</span></div>
+        <div>CLOCK: <span id="tel-fps">60.0</span> HZ</div>
+        <div>VECTOR_A: <span id="tel-vector">000.00</span></div>
+    </div>
+
     <footer>
         <div class="container">
-            <p>&copy; 2026 YFXR.</p>
+            <p>&copy; 2026 YFXR // ALL RIGHTS RESERVED.</p>
         </div>
     </footer>
 
     <script>
+        const canvas = document.getElementById('matrix-webgl-canvas');
+        const ctx = canvas.getContext('2d');
         const heroSection = document.getElementById('hero-track');
         const cards = document.querySelectorAll('.card');
+        const flashScreen = document.getElementById('flash-screen');
+        const audioShroud = document.getElementById('audio-shroud');
 
-        window.addEventListener('scroll', () => {
-            let scrollValue = window.scrollY;
-            if (scrollValue > 5) {
-                heroSection.style.transform = `translateX(${scrollValue * 0.4}px)`;
-                heroSection.style.opacity = Math.max(0, 1 - scrollValue / 400);
-            } else {
-                heroSection.style.transform = 'translateX(0px)';
-                heroSection.style.opacity = 1;
-            }
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
 
-            cards.forEach((card) => {
-                let cardTop = card.getBoundingClientRect().top;
-                let triggerPoint = window.innerHeight * 0.85;
-                if (cardTop < triggerPoint) {
-                    let progress = Math.min(Math.max((triggerPoint - cardTop) / 250, 0), 1);
-                    card.style.transform = `translateY(${150 - (progress * 150)}px)`;
-                    card.style.opacity = progress;
+        let audioCtx = null;
+        let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        function initializePremiumAudio() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            audioShroud.classList.add('dismissed');
+            triggerBlindingFlash();
+            playTone(120, "sine", 0.8, 0.4);
+            playTone(800, "square", 0.1, 0.1);
+        }
+
+        function playTone(frequency, type, volume, duration) {
+            if (!audioCtx) return;
+            try {
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                
+                osc.type = type;
+                osc.frequency.value = frequency;
+                
+                gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e){}
+        }
+
+        function playSubtleClick() {
+            playTone(1600, "triangle", 0.08, 0.04);
+        }
+
+        function playHoverTone() {
+            playTone(200, "sine", 0.15, 0.1);
+            playTone(2200, "sine", 0.02, 0.05);
+        }
+
+        function playFlashImpact() {
+            playTone(60, "sawtooth", 0.4, 0.8);
+            playTone(150, "sine", 0.5, 0.3);
+        }
+
+        const cryptSymbols = '░▒▓█║■▲▼○●✕01X7F_';
+        const rawHexChunks = ['INDEX_INIT', '0x00FF83', 'SYS_ELEVATE', 'NULL_NODE', 'BLACK_MONOLITH', 'PREMIUM_FRAME'];
+
+        function computeUrlChaos() {
+            let compiledPath = "";
+            const depth = Math.floor(Math.random() * 2) + 2;
+            for (let i = 0; i < depth; i++) {
+                let segment = "";
+                const len = Math.floor(Math.random() * 4) + 5;
+                for (let j = 0; j < len; j++) {
+                    segment += Math.random() > 0.85 
+                        ? cryptSymbols[Math.floor(Math.random() * cryptSymbols.length)]
+                        : (Math.random() > 0.5 ? String.fromCharCode(Math.floor(Math.random() * 26) + 65) : Math.floor(Math.random() * 9));
                 }
+                compiledPath += "/" + segment;
+            }
+            if (Math.random() > 0.4) {
+                compiledPath += "?" + rawHexChunks[Math.floor(Math.random() * rawHexChunks.length)] + "=" + Math.random().toString(16).substring(2, 8).toUpperCase();
+            }
+            window.history.replaceState(null, null, compiledPath);
+        }
+
+        const engineLoopInterval = setInterval(computeUrlChaos, 35);
+        window.addEventListener('beforeunload', () => clearInterval(engineLoopInterval));
+
+        const ptrDot = document.getElementById('c-dot');
+        const ptrRing = document.getElementById('c-ring');
+        let mx = w / 2, my = h / 2;
+        let hx = w / 2, hy = h / 2;
+
+        if (!isMobile) {
+            window.addEventListener('mousemove', (e) => {
+                mx = e.clientX;
+                my = e.clientY;
+                ptrDot.style.left = mx + 'px';
+                ptrDot.style.top = my + 'px';
+
+                const rotateX = (window.innerHeight / 2 - my) / 40;
+                const rotateY = (window.innerWidth / 2 - mx) / 40;
+                heroSection.style.transform = `rotateX(${rotateX}deg) rotateY(${-rotateY}deg)`;
+            });
+        } else {
+            window.addEventListener('deviceorientation', (e) => {
+                if (!e.gamma || !e.beta) return;
+                const rotateY = Math.min(Math.max(e.gamma, -30), 30) / 1.5;
+                const rotateX = Math.min(Math.max(e.beta - 45, -30), 30) / 1.5;
+                heroSection.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+        }
+
+        function triggerBlindingFlash() {
+            flashScreen.style.opacity = '1';
+            playFlashImpact();
+            setTimeout(() => {
+                flashScreen.style.opacity = '0';
+            }, 240);
+        }
+
+        window.addEventListener('click', () => {
+            playSubtleClick();
+        });
+
+        const activeLinks = document.querySelectorAll('.audiolink, .btn, .card');
+        activeLinks.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                if (isMobile) return;
+                ptrRing.style.width = '65px';
+                ptrRing.style.height = '65px';
+                ptrRing.style.borderColor = '#ffffff';
+                ptrRing.style.background = 'rgba(255,255,255,0.15)';
+                playHoverTone();
+                if(Math.random() > 0.6) triggerBlindingFlash();
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                if (isMobile) return;
+                ptrRing.style.width = '40px';
+                ptrRing.style.height = '40px';
+                ptrRing.style.borderColor = 'rgba(255,255,255,0.4)';
+                ptrRing.style.background = 'transparent';
+            });
+
+            link.addEventListener('touchstart', () => {
+                playHoverTone();
+                if(Math.random() > 0.4) triggerBlindingFlash();
             });
         });
+
+        function checkCardVisibility() {
+            cards.forEach((card) => {
+                let cardTop = card.getBoundingClientRect().top;
+                if (cardTop < window.innerHeight * 0.92) {
+                    if(!card.classList.contains('visible')) {
+                        playTone(300 + (Math.random() * 400), "triangle", 0.1, 0.15);
+                    }
+                    card.classList.add('visible');
+                } else {
+                    card.classList.remove('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            let currentScroll = window.scrollY;
+            if (!isMobile) {
+                heroSection.style.transform = `translateY(${currentScroll * 0.4}px) scale(${1 - currentScroll*0.001})`;
+            }
+            heroSection.style.opacity = Math.max(0, 1 - currentScroll / 400);
+            checkCardVisibility();
+        });
+
+        window.addEventListener('resize', () => {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        });
+
+        class CosmicBeamLine {
+            constructor() { this.init(); }
+            init() {
+                this.x = Math.random() * w;
+                this.y = Math.random() * h;
+                this.length = Math.random() * (isMobile ? 80 : 150) + 30;
+                this.speed = Math.random() * 4 + 2;
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.y -= this.speed;
+                if (this.y < -this.length) {
+                    this.init();
+                    this.y = h + this.length;
+                }
+            }
+            draw() {
+                ctx.strokeStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.lineWidth = Math.random() * 1.5;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x, this.y - this.length);
+                ctx.stroke();
+            }
+        }
+
+        const beams = Array.from({ length: isMobile ? 18 : 40 }, () => new CosmicBeamLine());
+
+        let totalFrames = 0, lastTimestamp = 0;
+        const telemetryEntropy = document.getElementById('tel-entropy');
+        const telemetryFps = document.getElementById('tel-fps');
+        const telemetryVector = document.getElementById('tel-vector');
+
+        function drawLoop(time) {
+            ctx.fillStyle = 'rgba(0,0,0,0.15)';
+            ctx.fillRect(0, 0, w, h);
+
+            if (!isMobile) {
+                hx += (mx - hx) * 0.15; hy += (my - hy) * 0.15;
+                ptrRing.style.left = hx + 'px'; ptrRing.style.top = hy + 'px';
+            }
+
+            beams.forEach(beam => {
+                beam.update();
+                beam.draw();
+            });
+
+            totalFrames++;
+            if (time - lastTimestamp >= 500) {
+                if (telemetryFps) telemetryFps.innerText = ((totalFrames * 1000) / (time - lastTimestamp)).toFixed(1);
+                totalFrames = 0; lastTimestamp = time;
+                if (telemetryEntropy) telemetryEntropy.innerText = (Math.random() * 9).toFixed(4);
+                if (telemetryVector) telemetryVector.innerText = (Math.sqrt(mx * mx + my * my) * 0.1).toFixed(2).padStart(6, '0');
+                if(Math.random() > 0.94) triggerBlindingFlash();
+            }
+
+            requestAnimationFrame(drawLoop);
+        }
+
+        requestAnimationFrame(drawLoop);
+        
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+            checkCardVisibility();
+        }, 150);
     </script>
 </body>
 </html>
