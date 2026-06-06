@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 // REALITY_COLLAPSE_FATAL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&family=Plus+Jakarta+Sans:wght@200;400;800&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-absolute: #010103;
+            --neon-laser: #ff0055;
+            --neon-matrix: #00f3ff;
+            --neon-void: #b927ff;
+            --text-pure: #ffffff;
+            --text-dark: #252538;
+            --glass-core: rgba(4, 4, 9, 0.65);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            cursor: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-absolute);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-pure);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 2000px;
+        }
+
+        #cosmic-accelerator-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            mix-blend-mode: screen;
+        }
+
+        .spatial-grid {
+            position: absolute;
+            inset: -200px;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.005) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.005) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 2;
+            transform: rotateX(70deg) translateZ(-150px);
+            transform-origin: center center;
+            pointer-events: none;
+            animation: gridWarp 30s linear infinite;
+        }
+
+        @keyframes gridWarp {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 1000px; }
+        }
+
+        .chromatic-aberration-lens {
+            position: absolute;
+            inset: 0;
+            z-index: 999;
+            pointer-events: none;
+            backdrop-filter: contrast(105%) brightness(102%);
+            mix-blend-mode: screen;
+            background: 
+                radial-gradient(circle at 49.9% 49.9%, transparent 85%, rgba(255, 0, 85, 0.02) 92%, rgba(0, 243, 255, 0.02) 100%),
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 100%, 100% 4px;
+        }
+
+        .pointer-core {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px #ffffff, 0 0 30px var(--neon-matrix);
+        }
+
+        .pointer-halo {
+            position: fixed;
+            width: 44px;
+            height: 44px;
+            border: 1px dashed rgba(0, 243, 255, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+            animation: haloRotate 6s linear infinite;
+        }
+
+        @keyframes haloRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .data-brackets {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-color: rgba(255, 255, 255, 0.03);
+            border-style: solid;
+            z-index: 50;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .br-tl { top: 40px; left: 40px; border-width: 2px 0 0 2px; }
+        .br-tr { top: 40px; right: 40px; border-width: 2px 2px 0 0; }
+        .br-bl { bottom: 40px; left: 40px; border-width: 0 0 2px 2px; }
+        .br-br { bottom: 40px; right: 40px; border-width: 0 2px 2px 0; }
+
+        body:hover .br-tl { transform: translate(-8px, -8px); border-color: var(--neon-matrix); }
+        body:hover .br-tr { transform: translate(8px, -8px); border-color: var(--neon-laser); }
+        body:hover .br-bl { transform: translate(-8px, 8px); border-color: var(--neon-void); }
+        body:hover .br-br { transform: translate(8px, 8px); border-color: var(--neon-matrix); }
+
+        .terminal-overlay-panel {
+            position: absolute;
+            right: 40px;
+            top: 100px;
+            bottom: 100px;
+            width: 260px;
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            color: rgba(0, 243, 255, 0.2);
+            overflow: hidden;
+            z-index: 5;
+            pointer-events: none;
+            mask-image: linear-gradient(to bottom, transparent, white 15%, white 85%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, white 15%, white 85%, transparent);
+        }
+
+        .terminal-stream-line {
+            line-height: 2;
+            white-space: nowrap;
+            letter-spacing: -0.5px;
+        }
+
+        .gravitational-anchor-node {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 780px;
+            padding: 1.5rem;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .monolith-shield {
+            position: relative;
+            background: var(--glass-core);
+            backdrop-filter: blur(50px) saturate(250%);
+            -webkit-backdrop-filter: blur(50px) saturate(250%);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 40px;
+            padding: 5rem 3.5rem;
+            text-align: center;
+            box-shadow: 
+                0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+                0 0 60px rgba(0, 243, 255, 0.01) inset,
+                0 40px 130px rgba(0, 0, 0, 0.95);
+            transform: translateZ(100px);
+            overflow: hidden;
+        }
+
+        .monolith-shield::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .exception-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(90deg, rgba(255, 0, 85, 0.1), rgba(185, 39, 255, 0.03));
+            border: 1px solid rgba(255, 0, 85, 0.2);
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            color: var(--neon-laser);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px rgba(255, 0, 85, 0.1);
+            transform: translateZ(25px);
+        }
+
+        .quantum-pulse {
+            width: 6px;
+            height: 6px;
+            background: var(--neon-laser);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-laser);
+            animation: ultraPulse 0.8s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes ultraPulse {
+            0% { transform: scale(0.8); opacity: 0.4; filter: blur(1px); }
+            100% { transform: scale(1.3); opacity: 1; filter: blur(0px); }
+        }
+
+        .kinetic-monument-404 {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+            transform-style: preserve-3d;
+        }
+
+        .vector-text-404 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 14rem;
+            font-weight: 700;
+            line-height: 0.75;
+            letter-spacing: -14px;
+            color: var(--text-pure);
+            position: relative;
+            display: inline-block;
+            transform: translateZ(80px);
+        }
+
+        .vector-text-404::before,
+        .vector-text-404::after {
+            content: '404';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .vector-text-404::before {
+            left: 4px;
+            text-shadow: -3px 0 var(--neon-matrix);
+            clip: rect(30px, 9999px, 80px, 0);
+            animation: ruptureGlitch1 0.2s infinite linear alternate-reverse;
+        }
+
+        .vector-text-404::after {
+            left: -4px;
+            text-shadow: 3px 0 var(--neon-laser);
+            clip: rect(130px, 9999px, 190px, 0);
+            animation: ruptureGlitch2 0.25s infinite linear alternate-reverse;
+        }
+
+        @keyframes ruptureGlitch1 {
+            0% { clip: rect(15px, 9999px, 60px, 0); transform: translate3d(2px, -2px, 0) skewX(3deg); }
+            50% { clip: rect(90px, 9999px, 120px, 0); transform: translate3d(-3px, 3px, 0) scaleY(1.05); }
+            100% { clip: rect(5px, 9999px, 210px, 0); transform: translate3d(1px, 1px, 0) skewX(-2deg); }
+        }
+
+        @keyframes ruptureGlitch2 {
+            0% { clip: rect(180px, 9999px, 220px, 0); transform: translate3d(-1px, 3px, 0) scaleX(0.95); }
+            30% { clip: rect(20px, 9999px, 70px, 0); transform: translate3d(3px, -1px, 0) skewY(1deg); }
+            70% { clip: rect(100px, 9999px, 140px, 0); transform: translate3d(-3px, -2px, 0) skewX(-4deg); }
+            100% { clip: rect(150px, 9999px, 200px, 0); transform: translate3d(0, 0, 0); }
+        }
+
+        .manifesto-header {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, #ffffff, rgba(255, 255, 255, 0.4));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform: translateZ(40px);
+        }
+
+        .manifesto-para {
+            color: #63637a;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            max-width: 520px;
+            margin: 0 auto 3.5rem auto;
+            font-weight: 200;
+            letter-spacing: -0.2px;
+            transform: translateZ(30px);
+        }
+
+        .deck-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translateZ(60px);
+        }
+
+        .hyper-magnetic-trigger {
+            position: relative;
+            padding: 22px 54px;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: #010103;
+            text-decoration: none;
+            text-transform: uppercase;
+            background: #ffffff;
+            border: none;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hyper-magnetic-trigger::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, var(--neon-matrix), var(--neon-void), var(--neon-laser));
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.4s ease;
+        }
+
+        .hyper-magnetic-trigger:hover {
+            color: #ffffff;
+            box-shadow: 0 25px 60px rgba(0, 243, 255, 0.3);
+            transform: translateY(-6px) scale(1.02);
+        }
+
+        .hyper-magnetic-trigger:hover::before {
+            opacity: 1;
+        }
+
+        .realtime-telemetry-dock {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            right: 40px;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Fira Code', monospace;
+            font-size: 9px;
+            color: var(--text-dark);
+            z-index: 50;
+            pointer-events: none;
+            letter-spacing: 1px;
+        }
+
+        .telemetry-node span {
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+        }
+
+        @media (max-width: 992px) {
+            .terminal-overlay-panel { display: none; }
+            .monolith-shield { padding: 4rem 2rem; border-radius: 28px; }
+            .vector-text-404 { font-size: 10rem; letter-spacing: -10px; }
+            .manifesto-header { font-size: 0.95rem; letter-spacing: 8px; }
+            .manifesto-para { font-size: 0.95rem; }
+            .realtime-telemetry-dock { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chromatic-aberration-lens"></div>
+    <div class="spatial-grid"></div>
+    <div class="pointer-core" id="ptr-dot"></div>
+    <div class="pointer-halo" id="ptr-halo"></div>
+
+    <div class="data-brackets br-tl"></div>
+    <div class="data-brackets br-tr"></div>
+    <div class="data-brackets br-bl"></div>
+    <div class="data-brackets br-br"></div>
+
+    <div class="terminal-overlay-panel" id="stream-box"></div>
+
+    <canvas id="cosmic-accelerator-canvas"></canvas>
+
+    <div class="gravitational-anchor-node" id="space-anchor">
+        <div class="monolith-shield" id="shield-element">
+            <div class="exception-pill">
+                <div class="quantum-pulse"></div>
+                <span>Page not found</span>
+            </div>
+            
+            <div class="kinetic-monument-404">
+                <div class="vector-text-404">404</div>
+            </div>
+            
+            <div>
+                <h1 class="manifesto-header">Are you lost?</h1>
+                <p class="manifesto-para">This page has been either deleted or doesn't exist.</p>
+            </div>
+            
+            <div class="deck-wrapper">
+                <a href="/" class="hyper-magnetic-trigger" id="magnetic-cta">
+                    <span>GO BACK HOME</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="realtime-telemetry-dock">
+        <div class="telemetry-node">DIM_CORE: <span id="tel-entropy">0.000000</span></div>
+        <div class="telemetry-node">MATRIX_REFRESH: <span id="tel-fps">60.0</span> HZ</div>
+        <div class="telemetry-node">GRAVITY_V: <span id="tel-vector">000.000</span></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cosmic-accelerator-canvas');
+        const ctx = canvas.getContext('2d');
+        const spaceAnchor = document.getElementById('space-anchor');
+        const shieldElement = document.getElementById('shield-element');
+        const streamBox = document.getElementById('stream-box');
+
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+
+        const cryptSymbols = '▰▱■□▲△▼▽◆◇○●✕⚙⚡☠☢☣🪐🌌🛸☄️🛰️🎚️🎛️';
+        const rawHexChunks = ['CORE_FAIL', '0x000FF9', 'SEG_FAULT', 'NULL_POINTER', 'VOID_NODE', 'MEM_LEAK_FATAL', 'OVERFLOW_ERR', 'KERNEL_PANIC_01'];
+
+        function computeUrlChaos() {
+            let compiledPath = "";
+            const depth = Math.floor(Math.random() * 3) + 3;
+            
+            for (let i = 0; i < depth; i++) {
+                let segment = "";
+                const len = Math.floor(Math.random() * 6) + 6;
+                for (let j = 0; j < len; j++) {
+                    if (Math.random() > 0.8) {
+                        segment += cryptSymbols[Math.floor(Math.random() * cryptSymbols.length)];
+                    } else {
+                        segment += Math.random() > 0.5 
+                            ? String.fromCharCode(Math.floor(Math.random() * 26) + 65) 
+                            : Math.floor(Math.random() * 9);
+                    }
+                }
+                compiledPath += "/" + segment;
+            }
+            if (Math.random() > 0.3) {
+                compiledPath += "?" + rawHexChunks[Math.floor(Math.random() * rawHexChunks.length)] + "=" + Math.random().toString(16).substring(2, 10).toUpperCase();
+            }
+            window.history.replaceState(null, null, compiledPath);
+        }
+
+        const engineLoopInterval = setInterval(computeUrlChaos, 25);
+
+        window.addEventListener('beforeunload', () => {
+            clearInterval(engineLoopInterval);
+        });
+
+        const ptrDot = document.getElementById('ptr-dot');
+        const ptrHalo = document.getElementById('ptr-halo');
+        let mx = w / 2, my = h / 2;
+        let hx = w / 2, hy = h / 2;
+
+        window.addEventListener('mousemove', (e) => {
+            mx = e.clientX;
+            my = e.clientY;
+            
+            ptrDot.style.left = mx + 'px';
+            ptrDot.style.top = my + 'px';
+
+            const rect = shieldElement.getBoundingClientRect();
+            const relX = ((e.clientX - rect.left) / rect.width) * 100;
+            const relY = ((e.clientY - rect.top) / rect.height) * 100;
+            shieldElement.style.setProperty('--mx', `${relX}%`);
+            shieldElement.style.setProperty('--my', `${relY}%`);
+
+            const rotateX = (window.innerHeight / 2 - my) / 45;
+            const rotateY = (window.innerWidth / 2 - mx) / 45;
+            spaceAnchor.style.transform = `rotateX(${rotateX}deg) rotateY(${-rotateY}deg)`;
+        });
+
+        const magneticCta = document.getElementById('magnetic-cta');
+        magneticCta.addEventListener('mouseenter', () => {
+            ptrHalo.style.width = '70px';
+            ptrHalo.style.height = '70px';
+            ptrHalo.style.borderColor = '#ff0055';
+            ptrHalo.style.borderStyle = 'solid';
+        });
+        magneticCta.addEventListener('mouseleave', () => {
+            ptrHalo.style.width = '44px';
+            ptrHalo.style.height = '44px';
+            ptrHalo.style.borderColor = 'rgba(0, 243, 255, 0.4)';
+            ptrHalo.style.borderStyle = 'dashed';
+        });
+
+        window.addEventListener('resize', () => {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        });
+
+        const diagnosticsData = [
+            "CRITICAL_EXCEPTION // Node mapping lost in thread 0x044",
+            "SYSTEM_FATAL // Structural decay threshold over 98.4%",
+            "GRAVITY_ENGINE // Local variance skewing space matrices",
+            "VECTOR_INDEX // Failed lookahead step processing instruction",
+            "WARN // Unbound pointer addressing structural space void",
+            "DESYNC_ALERT // Master system execution clock timing drift",
+            "STACK_TRACE // Error instantiated at line position 00x124A",
+            "HEX_STREAM // Memory object cluster corruption in block B",
+            "CORE_WARP // Dimension parameter parsing arrays collapsing",
+            "ABORT // Discarding active data frame rendering buffers"
+        ];
+
+        function operationalLogEngine() {
+            setInterval(() => {
+                const row = document.createElement('div');
+                row.className = 'terminal-stream-line';
+                const stamp = `[${performance.now().toFixed(4)}] `;
+                let stringPayload = diagnosticsData[Math.floor(Math.random() * diagnosticsData.length)];
+                
+                if (Math.random() > 0.8) {
+                    stringPayload = `DUMP_CORE_REGISTERS // AX:${Math.random().toString(16).substring(2, 6).toUpperCase()} BX:${Math.random().toString(16).substring(2, 6).toUpperCase()}`;
+                }
+                
+                row.innerText = stamp + stringPayload;
+                streamBox.appendChild(row);
+                
+                if (streamBox.childNodes.length > 35) {
+                    streamBox.removeChild(streamBox.firstChild);
+                }
+            }, 200);
+        }
+        operationalLogEngine();
+
+        class CosmicStarNode {
+            constructor() {
+                this.allocate();
+                this.x = Math.random() * w;
+                this.y = Math.random() * h;
+            }
+
+            allocate() {
+                this.ox = Math.random() * w;
+                this.oy = Math.random() * h;
+                this.x = this.ox;
+                this.y = this.oy;
+                this.vx = 0;
+                this.vy = 0;
+                this.radius = Math.random() * 2.5 + 0.5;
+                this.colorDeterminant = Math.random();
+                this.color = this.colorDeterminant > 0.75 ? '#00f3ff' : (this.colorDeterminant > 0.4 ? '#ff0055' : '#b927ff');
+                this.baseAlpha = Math.random() * 0.5 + 0.2;
+                this.alpha = this.baseAlpha;
+                this.waveRadius = Math.random() * 70 + 20;
+                this.waveSpeed = Math.random() * 0.02 + 0.002;
+                this.angle = Math.random() * Math.PI * 2;
+            }
+
+            process(tick) {
+                this.angle += this.waveSpeed;
+                let tx = this.ox + Math.cos(this.angle) * this.waveRadius;
+                let ty = this.oy + Math.sin(this.angle) * this.waveRadius;
+
+                let dx = mx - this.x;
+                let dy = my - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 300) {
+                    let spatialForce = (300 - distance) / 300;
+                    let angleScatter = Math.atan2(dy, dx);
+                    tx -= Math.cos(angleScatter) * spatialForce * 140;
+                    ty -= Math.sin(angleScatter) * spatialForce * 140;
+                    this.alpha = Math.min(1, this.baseAlpha + spatialForce * 0.4);
+                } else {
+                    this.alpha = this.baseAlpha;
+                }
+
+                this.vx += (tx - this.x) * 0.08;
+                this.vy += (ty - this.y) * 0.08;
+                this.vx *= 0.82;
+                this.vy *= 0.82;
+
+                this.x += this.vx;
+                this.y += this.vy;
+            }
+
+            render() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const nodes = [];
+        for (let i = 0; i < 180; i++) {
+            nodes.push(new CosmicStarNode());
+        }
+
+        let totalFrames = 0;
+        let trackedFps = 60;
+        let lastTimestamp = 0;
+
+        const telemetryEntropy = document.getElementById('tel-entropy');
+        const telemetryFps = document.getElementById('tel-fps');
+        const telemetryVector = document.getElementById('tel-vector');
+
+        function structuralAnimationLoop(time) {
+            ctx.fillStyle = 'rgba(1, 1, 3, 0.14)';
+            ctx.fillRect(0, 0, w, h);
+
+            hx += (mx - hx) * 0.06;
+            hy += (my - hy) * 0.06;
+            ptrHalo.style.left = hx + 'px';
+            ptrHalo.style.top = hy + 'px';
+
+            nodes.forEach(node => {
+                node.process(time);
+                node.render();
+            });
+
+            for (let i = 0; i < nodes.length; i++) {
+                let vectorConnections = 0;
+                for (let j = i + 1; j < nodes.length; j++) {
+                    if (vectorConnections > 2) break;
+                    let dx = nodes[i].x - nodes[j].x;
+                    let dy = nodes[i].y - nodes[j].y;
+                    let d = Math.sqrt(dx * dx + dy * dy);
+
+                    if (d < 160) {
+                        vectorConnections++;
+                        let lineOpacity = (1 - (d / 160)) * 0.2;
+                        ctx.strokeStyle = nodes[i].colorDeterminant > 0.5 ? `rgba(0, 243, 255, ${lineOpacity})` : `rgba(255, 0, 85, ${lineOpacity})`;
+                        ctx.lineWidth = (1 - (d / 160)) * 1.1;
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            totalFrames++;
+            if (time - lastTimestamp >= 500) {
+                trackedFps = ((totalFrames * 1000) / (time - lastTimestamp)).toFixed(1);
+                totalFrames = 0;
+                lastTimestamp = time;
+                
+                telemetryFps.innerText = trackedFps;
+                telemetryEntropy.innerText = (Math.random() * 25).toFixed(6);
+                telemetryVector.innerText = (Math.sqrt(mx * mx + my * my) * 0.75).toFixed(3).padStart(7, '0');
+            }
+
+            requestAnimationFrame(structuralAnimationLoop);
+        }
+
+        requestAnimationFrame(structuralAnimationLoop);
+    </script>
+</body>
+</html>
