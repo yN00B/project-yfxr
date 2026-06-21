@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presence — Discord Rich Presence Builder</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  :root{
+    --bg:#0a0b0f;
+    --panel:#12141a;
+    --panel-2:#181b22;
+    --line:#23262f;
+    --text:#e8e9ed;
+    --dim:#8b8f9c;
+    --dimmer:#5a5d68;
+    --blurple:#5865f2;
+    --blurple-soft:#5865f233;
+    --green:#23a55a;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Space Grotesk', sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--blurple-soft); color:#fff;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+
+  /* background texture */
+  .grid-bg{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:48px 48px;
+    opacity:.25;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 75%);
+  }
+  .glow{
+    position:fixed; top:-200px; left:50%; transform:translateX(-50%);
+    width:900px; height:600px; z-index:0; pointer-events:none;
+    background:radial-gradient(ellipse at center, var(--blurple-soft) 0%, transparent 70%);
+    opacity:.6;
+  }
+
+  header{
+    position:relative; z-index:2;
+    max-width:1200px; margin:0 auto; padding:28px 32px 0;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-weight:700; font-size:18px; letter-spacing:-.02em;}
+  .brand .dot{width:9px; height:9px; border-radius:50%; background:var(--green); box-shadow:0 0 12px var(--green); animation:pulse 2.4s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.35;}}
+  nav a{color:var(--dim); text-decoration:none; font-size:14px; margin-left:28px; transition:color .2s;}
+  nav a:hover{color:var(--text);}
+
+  .hero{
+    position:relative; z-index:2;
+    max-width:1200px; margin:0 auto; padding:90px 32px 60px;
+    text-align:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--blurple);
+    background:var(--blurple-soft); border:1px solid #5865f255;
+    padding:6px 14px; border-radius:100px; margin-bottom:28px;
+    opacity:0; animation:fadeUp .7s ease forwards;
+  }
+  h1{
+    font-size:clamp(36px, 6vw, 64px); font-weight:700; letter-spacing:-.03em; line-height:1.05;
+    opacity:0; animation:fadeUp .7s ease .08s forwards;
+  }
+  h1 span{color:var(--blurple);}
+  .sub{
+    max-width:560px; margin:22px auto 0; color:var(--dim); font-size:17px; line-height:1.6;
+    opacity:0; animation:fadeUp .7s ease .16s forwards;
+  }
+  @keyframes fadeUp{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);}}
+
+  .scroll-cue{
+    display:flex; justify-content:center; margin-top:54px;
+    opacity:0; animation:fadeUp .7s ease .3s forwards;
+  }
+  .scroll-cue svg{animation:bob 1.8s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0);} 50%{transform:translateY(6px);}}
+
+  /* MAIN LAYOUT */
+  .workshop{
+    position:relative; z-index:2;
+    max-width:1200px; margin:0 auto; padding:20px 32px 120px;
+    display:grid; grid-template-columns:1fr 420px; gap:28px;
+  }
+  @media (max-width:920px){ .workshop{grid-template-columns:1fr;} }
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:28px;
+  }
+  .panel h2{
+    font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim);
+    font-family:'JetBrains Mono', monospace; margin-bottom:20px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .panel h2::after{content:''; flex:1; height:1px; background:var(--line);}
+
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block; font-size:13px; color:var(--dim); margin-bottom:7px; font-family:'JetBrains Mono', monospace;
+  }
+  .field input[type=text], .field input[type=url], .field select{
+    width:100%; background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+    padding:11px 13px; border-radius:9px; font-size:14px; font-family:'Space Grotesk', sans-serif;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .field input:focus, .field select:focus{
+    outline:none; border-color:var(--blurple); box-shadow:0 0 0 3px var(--blurple-soft);
+  }
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .hint{font-size:12px; color:var(--dimmer); margin-top:6px; line-height:1.4;}
+  .hint a{color:var(--dim);}
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; padding:10px 0;}
+  .toggle-row label{font-size:14px; color:var(--text); font-family:'Space Grotesk', sans-serif;}
+  .switch{position:relative; width:42px; height:24px; flex-shrink:0;}
+  .switch input{opacity:0; width:0; height:0;}
+  .slider{position:absolute; inset:0; background:var(--panel-2); border:1px solid var(--line); border-radius:100px; cursor:pointer; transition:.25s;}
+  .slider::before{content:''; position:absolute; width:16px; height:16px; left:3px; top:3px; background:var(--dim); border-radius:50%; transition:.25s;}
+  .switch input:checked + .slider{background:var(--blurple-soft); border-color:var(--blurple);}
+  .switch input:checked + .slider::before{transform:translateX(18px); background:var(--blurple);}
+
+  /* PREVIEW (signature element) */
+  .preview-wrap{position:sticky; top:24px; align-self:start; display:flex; flex-direction:column; gap:18px;}
+  .discord-card{
+    background:#1e1f27;
+    border-radius:12px;
+    padding:16px;
+    border:1px solid #2b2d36;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.6);
+    transition:transform .25s ease;
+  }
+  .discord-card:hover{transform:translateY(-3px);}
+  .dc-section-label{
+    font-size:11px; font-weight:700; text-transform:uppercase; color:#8b8f9c; letter-spacing:.03em; margin-bottom:12px;
+  }
+  .dc-activity{display:flex; gap:12px;}
+  .dc-art{
+    position:relative; width:64px; height:64px; flex-shrink:0; border-radius:8px;
+    background:linear-gradient(135deg, var(--blurple), #8d5ef0);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .dc-art img{width:100%; height:100%; object-fit:cover;}
+  .dc-art .placeholder{font-family:'JetBrains Mono', monospace; font-size:10px; color:#fff9; text-align:center;}
+  .dc-small-art{
+    position:absolute; bottom:-4px; right:-4px; width:24px; height:24px; border-radius:50%;
+    background:#2b2d36; border:3px solid #1e1f27; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .dc-small-art img{width:100%; height:100%; object-fit:cover;}
+  .dc-text{flex:1; min-width:0;}
+  .dc-name{font-size:14px; font-weight:700; color:#fff; margin-bottom:3px;}
+  .dc-detail{font-size:13px; color:#dcddde; line-height:1.4; white-space:pre-wrap; word-break:break-word;}
+  .dc-state{font-size:13px; color:#b9bbbe; line-height:1.4; margin-top:1px; white-space:pre-wrap; word-break:break-word;}
+  .dc-time{font-size:12px; color:#b9bbbe; margin-top:5px; display:flex; align-items:center; gap:5px;}
+  .dc-buttons{display:flex; gap:8px; margin-top:12px;}
+  .dc-btn{
+    flex:1; background:#2b2d36; border:1px solid #3a3c46; color:#dcddde; font-size:13px;
+    padding:7px 0; border-radius:6px; text-align:center; font-family:'Space Grotesk', sans-serif;
+    transition:background .2s;
+  }
+  .dc-btn:hover{background:#35373f;}
+
+  .status-line{
+    display:flex; align-items:center; gap:10px; font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--dimmer);
+    padding:0 4px;
+  }
+  .status-dot{width:7px; height:7px; border-radius:50%; background:var(--dimmer); flex-shrink:0;}
+
+  /* steps */
+  .steps{display:flex; flex-direction:column; gap:14px; margin-top:6px;}
+  .step{display:flex; gap:12px; align-items:flex-start;}
+  .step-num{
+    font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--blurple); flex-shrink:0;
+    width:22px; height:22px; border-radius:6px; background:var(--blurple-soft); border:1px solid #5865f255;
+    display:flex; align-items:center; justify-content:center; margin-top:1px;
+  }
+  .step p{font-size:13.5px; color:var(--dim); line-height:1.55;}
+  .step strong{color:var(--text); font-weight:600;}
+  .step code{font-family:'JetBrains Mono', monospace; background:var(--panel-2); padding:1px 6px; border-radius:4px; font-size:12.5px; color:var(--text);}
+
+  .download-btn{
+    width:100%; background:var(--blurple); color:#fff; border:none; padding:15px; border-radius:11px;
+    font-size:15px; font-weight:600; font-family:'Space Grotesk', sans-serif; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:9px;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s;
+    box-shadow:0 0 0 0 var(--blurple-soft);
+  }
+  .download-btn:hover{background:#4953d6; transform:translateY(-1px); box-shadow:0 8px 24px -8px #5865f288;}
+  .download-btn:active{transform:translateY(0px) scale(.98);}
+  .download-btn svg{transition:transform .2s;}
+  .download-btn:hover svg{transform:translateY(2px);}
+
+  .copy-note{
+    text-align:center; font-size:12px; color:var(--dimmer); margin-top:10px; font-family:'JetBrains Mono', monospace;
+    opacity:0; transition:opacity .3s;
+  }
+  .copy-note.show{opacity:1;}
+
+  footer{
+    position:relative; z-index:2; text-align:center; padding:40px 32px 60px;
+    color:var(--dimmer); font-size:13px; font-family:'JetBrains Mono', monospace;
+  }
+  footer a{color:var(--dim);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="glow"></div>
+
+<header>
+  <div class="brand"><span class="dot"></span>YFXR</div>
+  <nav>
+    <a href="#build">Build</a>
+    <a href="#how">How it works</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="eyebrow mono">● local · zero install lock-in · pypresence under the hood</div>
+  <h1>Design your status.<br><span>Run it on your machine.</span></h1>
+  <p class="sub">Build a custom Discord Rich Presence visually, watch it update live, then download one Python file that connects straight to your Discord client. No server, no account, no token.</p>
+  <div class="scroll-cue">
+    <svg width="20" height="28" viewBox="0 0 20 28" fill="none"><rect x="1" y="1" width="18" height="26" rx="9" stroke="#3a3c46" stroke-width="1.5"/><circle cx="10" cy="8" r="2.5" fill="#5865f2"/></svg>
+  </div>
+</section>
+
+<div class="workshop" id="build">
+
+  <!-- LEFT: CONTROLS -->
+  <div style="display:flex; flex-direction:column; gap:24px;">
+
+    <div class="panel">
+      <h2>Application</h2>
+      <div class="field">
+        <label for="appId">Discord Application ID</label>
+        <input type="text" id="appId" class="mono" placeholder="1234567890123456789">
+        <div class="hint">From the <a href="https://discord.com/developers/applications" target="_blank" rel="noopener">Discord Developer Portal</a> → New Application. Required for the presence to show your bot's name and uploaded art.</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Status text</h2>
+      <div class="field">
+        <label for="detail">Detail line</label>
+        <input type="text" id="detail" placeholder="Debugging at 2am">
+      </div>
+      <div class="field">
+        <label for="state">State line</label>
+        <input type="text" id="state" placeholder="Send help">
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Artwork</h2>
+      <div class="row2">
+        <div class="field">
+          <label for="largeImg">Large image key</label>
+          <input type="text" id="largeImg" class="mono" placeholder="main_logo">
+        </div>
+        <div class="field">
+          <label for="largeText">Large image tooltip</label>
+          <input type="text" id="largeText" placeholder="My Project">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="smallImg">Small image key</label>
+          <input type="text" id="smallImg" class="mono" placeholder="status_icon">
+        </div>
+        <div class="field">
+          <label for="smallText">Small image tooltip</label>
+          <input type="text" id="smallText" placeholder="Online">
+        </div>
+      </div>
+      <div class="hint">Keys are assets you upload under Rich Presence → Art Assets in your application. Leave blank to skip.</div>
+    </div>
+
+    <div class="panel">
+      <h2>Buttons & timer</h2>
+      <div class="row2">
+        <div class="field">
+          <label for="btn1Label">Button 1 label</label>
+          <input type="text" id="btn1Label" placeholder="View Project">
+        </div>
+        <div class="field">
+          <label for="btn1Url">Button 1 link</label>
+          <input type="url" id="btn1Url" class="mono" placeholder="https://github.com/you">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="btn2Label">Button 2 label</label>
+          <input type="text" id="btn2Label" placeholder="">
+        </div>
+        <div class="field">
+          <label for="btn2Url">Button 2 link</label>
+          <input type="url" id="btn2Url" class="mono" placeholder="">
+        </div>
+      </div>
+      <div class="toggle-row">
+        <label for="elapsed">Show elapsed time</label>
+        <div class="switch"><input type="checkbox" id="elapsed" checked><span class="slider"></span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: PREVIEW + EXPORT -->
+  <div class="preview-wrap">
+
+    <div class="panel">
+      <h2>Live preview</h2>
+      <div class="discord-card">
+        <div class="dc-section-label">Playing a Game</div>
+        <div class="dc-activity">
+          <div class="dc-art">
+            <span class="placeholder" id="artPlaceholder">large<br>image</span>
+            <div class="dc-small-art"><span class="placeholder" id="smallPlaceholder" style="font-size:7px;">●</span></div>
+          </div>
+          <div class="dc-text">
+            <div class="dc-name" id="pName">your app name</div>
+            <div class="dc-detail" id="pDetail">Debugging at 2am</div>
+            <div class="dc-state" id="pState">Send help</div>
+            <div class="dc-time" id="pTime">⏱ 00:00 elapsed</div>
+          </div>
+        </div>
+        <div class="dc-buttons" id="pButtons"></div>
+      </div>
+      <div class="status-line" style="margin-top:16px;">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">preview only — download the script to go live</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Export</h2>
+      <button class="download-btn" id="downloadBtn">
+        Download launcher.py
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1V11M8 11L4 7M8 11L12 7" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 13.5H14" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+      <div class="copy-note mono" id="copyNote">downloaded — see steps below ↓</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="workshop" id="how" style="grid-template-columns:1fr; max-width:760px;">
+  <div class="panel">
+    <h2>Running it</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num mono">1</div>
+        <p><strong>Install the one dependency</strong> — open a terminal and run <code>pip install pypresence</code>. That's the whole install.</p>
+      </div>
+      <div class="step">
+        <div class="step-num mono">2</div>
+        <p><strong>Make sure Discord is open</strong> on the same machine. The script talks to it over a local socket — nothing leaves your computer.</p>
+      </div>
+      <div class="step">
+        <div class="step-num mono">3</div>
+        <p><strong>Run the file</strong> — <code>python launcher.py</code>. Your status appears within a couple seconds and stays live until you close the script.</p>
+      </div>
+      <div class="step">
+        <div class="step-num mono">4</div>
+        <p><strong>Edit anytime</strong> — change values up top and rerun, or come back here and download a fresh version.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  built with <span style="color:var(--blurple);">pypresence</span> · your config never leaves this page
+</footer>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const fields = ['appId','detail','state','largeImg','largeText','smallImg','smallText','btn1Label','btn1Url','btn2Label','btn2Url'];
+
+  function renderButtons(){
+    const btnWrap = $('pButtons');
+    btnWrap.innerHTML = '';
+    const pairs = [[$('btn1Label').value, $('btn1Url').value], [$('btn2Label').value, $('btn2Url').value]];
+    pairs.forEach(([label, url]) => {
+      if(label){
+        const d = document.createElement('div');
+        d.className = 'dc-btn';
+        d.textContent = label;
+        btnWrap.appendChild(d);
+      }
+    });
+    btnWrap.style.display = btnWrap.children.length ? 'flex' : 'none';
+  }
+
+  function update(){
+    $('pName').textContent = $('largeText').value || 'your app name';
+    $('pDetail').textContent = $('detail').value || 'Debugging at 2am';
+    $('pState').textContent = $('state').value || 'Send help';
+    $('artPlaceholder').textContent = $('largeImg').value ? '' : 'large\nimage';
+    $('smallPlaceholder').style.opacity = $('smallImg').value ? '0' : '1';
+    $('pTime').style.display = $('elapsed').checked ? 'flex' : 'none';
+    renderButtons();
+
+    const dot = $('statusDot'), txt = $('statusText');
+    if($('appId').value.trim()){
+      dot.style.background = '#23a55a';
+      dot.style.boxShadow = '0 0 8px #23a55a';
+      txt.textContent = 'config looks ready — download below';
+    } else {
+      dot.style.background = '#5a5d68';
+      dot.style.boxShadow = 'none';
+      txt.textContent = 'add an Application ID to enable export';
+    }
+  }
+
+  fields.forEach(id => $(id).addEventListener('input', update));
+  $('elapsed').addEventListener('change', update);
+  update();
+
+  // live elapsed timer in preview for feel
+  let start = Date.now();
+  setInterval(() => {
+    if(!$('elapsed').checked) return;
+    const s = Math.floor((Date.now()-start)/1000);
+    const mm = String(Math.floor(s/60)).padStart(2,'0');
+    const ss = String(s%60).padStart(2,'0');
+    $('pTime').textContent = `⏱ ${mm}:${ss} elapsed`;
+  }, 1000);
+
+  $('downloadBtn').addEventListener('click', () => {
+    const appId = $('appId').value.trim() || 'YOUR_APP_ID_HERE';
+    const detail = $('detail').value || 'Debugging at 2am';
+    const state = $('state').value || 'Send help';
+    const largeImg = $('largeImg').value;
+    const largeText = $('largeText').value;
+    const smallImg = $('smallImg').value;
+    const smallText = $('smallText').value;
+    const showElapsed = $('elapsed').checked;
+
+    const buttons = [];
+    if($('btn1Label').value && $('btn1Url').value) buttons.push({label:$('btn1Label').value, url:$('btn1Url').value});
+    if($('btn2Label').value && $('btn2Url').value) buttons.push({label:$('btn2Label').value, url:$('btn2Url').value});
+
+    const py = `"""
+Discord Rich Presence launcher
+Generated by Presence — edit any value below and rerun.
+
+Setup:
+  pip install pypresence
+  python launcher.py
+"""
+
+import time
+from pypresence import Presence
+
+CLIENT_ID = "${appId}"
+
+DETAILS = ${JSON.stringify(detail)}
+STATE = ${JSON.stringify(state)}
+LARGE_IMAGE_KEY = ${JSON.stringify(largeImg)}
+LARGE_IMAGE_TEXT = ${JSON.stringify(largeText)}
+SMALL_IMAGE_KEY = ${JSON.stringify(smallImg)}
+SMALL_IMAGE_TEXT = ${JSON.stringify(smallText)}
+SHOW_ELAPSED = ${showElapsed ? 'True' : 'False'}
+BUTTONS = ${JSON.stringify(buttons, null, 4)}
+
+rpc = Presence(CLIENT_ID)
+rpc.connect()
+print("Connected to Discord. Press Ctrl+C to stop.")
+
+payload = {
+    "details": DETAILS,
+    "state": STATE,
+}
+if LARGE_IMAGE_KEY:
+    payload["large_image"] = LARGE_IMAGE_KEY
+if LARGE_IMAGE_TEXT:
+    payload["large_text"] = LARGE_IMAGE_TEXT
+if SMALL_IMAGE_KEY:
+    payload["small_image"] = SMALL_IMAGE_KEY
+if SMALL_IMAGE_TEXT:
+    payload["small_text"] = SMALL_IMAGE_TEXT
+if SHOW_ELAPSED:
+    payload["start"] = int(time.time())
+if BUTTONS:
+    payload["buttons"] = BUTTONS
+
+rpc.update(**payload)
+
+try:
+    while True:
+        time.sleep(15)
+except KeyboardInterrupt:
+    print("Stopped.")
+`;
+
+    const blob = new Blob([py], {type:'text/x-python'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'launcher.py';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    const note = $('copyNote');
+    note.classList.add('show');
+    setTimeout(()=>note.classList.remove('show'), 4000);
+  });
+})();
+</script>
+
+</body>
+</html>
